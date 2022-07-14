@@ -1,13 +1,50 @@
 package org.upc.oj.auth.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.upc.oj.auth.service.LoginService;
 
-@RestController
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController()
+@RequestMapping("/auth")
 public class LoginController {
-    @RequestMapping(path = "/hello")
-    public String getToken(){
-        return "hello";
+    @Autowired
+    private LoginService loginService;
+
+    /**
+     * 登录认证
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param response 略
+     * @return 返回认证结果json
+     */
+    @PostMapping(path = "/login")
+    public Map<String, String> getToken(String username, String password, HttpServletResponse response) {
+        if(username==null){
+            username="";
+        }
+        if(password==null){
+            password="";
+        }
+        String token = loginService.getTokenByLogin(username, password);
+        Map<String, String> msg = new HashMap<>();
+        if (token == null) {
+            msg.put("status", "error");
+            msg.put("msg", "认证失败,账号不存在或者密码错误");
+            return msg;
+        }
+        msg.put("status", "success");
+        msg.put("token", token);
+        Cookie token_cookie = new Cookie("token", token);
+        token_cookie.setMaxAge((int) (LoginService.lifeTime / 1000));
+        response.addCookie(token_cookie);
+        return msg;
     }
 }
