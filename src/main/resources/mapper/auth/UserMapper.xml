@@ -3,16 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.upc.oj.auth.dao.UserMapper">
-<!--    <insert id="addExam">-->
-<!--        insert into exam(paperID,testTime,startTime,lateTime,submitTime,classID,antiSettings,examName,introduce,scoreList,totalScore)-->
-<!--        values(#{paperID},#{testTime},#{startTime},#{lateTime},#{submitTime},#{classID},#{antiSettings},#{examName},#{introduce},#{scoreList},#{totalScore})-->
-<!--    </insert>-->
-<!--    <select resultType="org.mixed.exam.bank.pojo.po.Exam" id="list">-->
-<!--        select exam.* from chooseClass,exam where #{userName}=chooseClass.sname and chooseClass.cno=exam.classID-->
-<!--    </select>-->
-<!--    <select id="getByID" resultType="org.mixed.exam.bank.pojo.po.Exam">-->
-<!--        select * from exam where id=#{id}-->
-<!--    </select>-->
     <select id="getUserList" resultType="org.upc.oj.auth.po.OJUser">
         select username,identity from user where username=#{username} and password=#{password}
     </select>
