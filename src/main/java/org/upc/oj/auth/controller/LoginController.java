@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.upc.oj.auth.service.LoginService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,15 @@ public class LoginController {
         Cookie token_cookie = new Cookie("token", token);
         token_cookie.setMaxAge((int) (LoginService.lifeTime / 1000));
         response.addCookie(token_cookie);
+        return msg;
+    }
+    @PostMapping(path="/logout")
+    public Map<String, String> getToken(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token","");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        Map<String,String> msg=new HashMap<>();
+        msg.put("status","success");
         return msg;
     }
 }
