@@ -43,4 +43,5 @@ public class ResultMap {
     public void setTestId(String testId) {
         TestId = testId;
     }
+
 }
