@@ -6,14 +6,83 @@ import com.mysql.cj.Session;
 public class JudgeMsg {
     @JSONField(name = "lang")
     private String lang;
-    @JSONField(name = "Question")
-    private String Question;
+    @JSONField(name = "QuestionId")
+    private String QuestionId;
     @JSONField(name = "UserId")
     private String UserId;
-    @JSONField(name = "count")
-    private String count;
-    @JSONField(name = "session")
-    private Session session;
+    @JSONField(name = "Code")
+    private String Path_Code;
+    private String Path_Judger="";
+    private String Path_Input;
+    private String Path_Output;
+    private String Path_Result;
+    private String TimeLimit="1000";
+    private String MemLimit="256";
+
+
+    public String getTimeLimit() {
+        return TimeLimit;
+    }
+
+    public void setTimeLimit(String timeLimit) {
+        TimeLimit = timeLimit;
+    }
+
+    public String getMemLimit() {
+        return MemLimit;
+    }
+
+    public void setMemLimit(String memLimit) {
+        MemLimit = memLimit;
+    }
+
+
+
+
+
+
+
+    public String getPath_Judger() {
+        return Path_Judger;
+    }
+
+    public void setPath_Judger(String path_Judger) {
+        Path_Judger = path_Judger;
+    }
+
+    public String getPath_Input() {
+        return Path_Input;
+    }
+
+    public void setPath_Input(String path_Input) {
+        Path_Input = path_Input;
+    }
+
+    public String getPath_Output() {
+        return Path_Output;
+    }
+
+    public void setPath_Output(String path_Output) {
+        Path_Output = path_Output;
+    }
+
+    public String getPath_Result() {
+        return Path_Result;
+    }
+
+    public void setPath_Result(String path_Result) {
+        Path_Result = path_Result;
+    }
+
+
+    public String getPath_Code() {
+        return Path_Code;
+    }
+
+    public void setPath_Code(String code) {
+        Path_Code = code;
+    }
+
 
     public String getLang() {
         return lang;
@@ -24,11 +93,11 @@ public class JudgeMsg {
     }
 
     public String getQuestion() {
-        return Question;
+        return QuestionId ;
     }
 
     public void setQuestion(String question) {
-        Question = question;
+        QuestionId = question;
     }
 
     public String getUserId() {
@@ -39,32 +108,22 @@ public class JudgeMsg {
         UserId = userId;
     }
 
-    public String getCount() {
-        return count;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-
-    public JudgeMsg( String lang,
+    public JudgeMsg(    String lang,
                         String Question,
                         String UserId,
-                        String count,
-                        Session session){
+                        String pathCode,
+                        String pathInput,
+                        String pathOutput,
+                        String pathResult
+
+                        ){
         this.lang=lang;
-        this.Question=Question;
+        this.QuestionId=Question;
         this.UserId=UserId;
-        this.count=count;
-        this.session=session;
+        this.Path_Code=pathCode;
+        this.Path_Input=pathInput;
+        this.Path_Output=pathOutput;
+        this.Path_Result=pathResult;
+
     }
 }
