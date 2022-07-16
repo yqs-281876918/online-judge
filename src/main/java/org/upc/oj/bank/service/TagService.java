@@ -20,38 +20,24 @@ public class TagService {
      * @param title
      * @return
      */
-    public String createTag(String title){
-        try {
-            tagMapper.insertTag(title);
-        }catch (Exception e){
-            return e.getCause().getMessage();
-        }
-        return null;
+    public void createTag(String title) throws RuntimeException{
+        tagMapper.insertTag(title);
     }
     /**
      * 查询所有标签
      * @param
      * @return
      */
-    public List<Tag> getTagList(){
-        try {
-            return tagMapper.getTagList();
-        }catch (Exception e){
-            return null;
-        }
+    public List<Tag> getTagList() throws RuntimeException{
+        return tagMapper.getTagList();
     }
     /**
      * 删除标签
      * @param title
      * @return
      */
-    public String delTagByTitle(String title){
-        try {
-            tagMapper.delTagByTitle(title);
-        }catch (Exception e){
-            return e.getCause().getMessage();
-        }
-        return null;
+    public void delTagByTitle(String title) throws RuntimeException{
+        tagMapper.delTagByTitle(title);
     }
 
 }

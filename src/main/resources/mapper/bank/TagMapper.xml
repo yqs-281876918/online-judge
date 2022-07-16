@@ -8,7 +8,7 @@
         insert into tag(title) values(#{title});
     </insert>
     <!--获取标签信息-->
-    <select id="getTagList" resultType="Tag">
+    <select id="getTagList" resultType="org.upc.oj.bank.po.Tag">
         select * from tag
     </select>
     <!--删除标签-->

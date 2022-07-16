@@ -24,6 +24,6 @@ public interface TagMapper {
      * @param title
      * @return
      */
-    public String delTagByTitle( String title);
+    public void delTagByTitle( String title);
     public List<Tag> getTagByTitle(String title);
 }
