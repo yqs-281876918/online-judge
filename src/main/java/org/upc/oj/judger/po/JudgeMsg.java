@@ -12,6 +12,7 @@ public class JudgeMsg {
     private String UserId;
     @JSONField(name = "Code")
     private String Code;
+    private String Path_Code="E:\\compile-main";
     private String Path_Judger="E:\\compile-main\\judger.exe";
     private String Path_Input="E:\\compile-main\\in";
     private String Path_Output="E:\\compile-main\\out";
@@ -19,6 +20,13 @@ public class JudgeMsg {
     private String TimeLimit="1000";
     private String MemLimit="256";
 
+    public String getPath_Code() {
+        return Path_Code;
+    }
+
+    public void setPath_Code(String path_Code) {
+        Path_Code = path_Code;
+    }
 
     public String getTimeLimit() {
         return TimeLimit;
@@ -92,11 +100,11 @@ public class JudgeMsg {
         this.lang = lang;
     }
 
-    public String getQuestion() {
+    public String getQuestionId() {
         return QuestionId ;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestionId(String question) {
         QuestionId = question;
     }
 
