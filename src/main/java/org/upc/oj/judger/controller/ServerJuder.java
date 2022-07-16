@@ -67,6 +67,7 @@ public class ServerJuder {
             byte b[]=null;
             b=in.readAllBytes();
             ResultMap res=JSON.parseObject(new String(b),ResultMap.class);
+            res.setTestId(i.getId());
             rtn.add(res);
             System.out.println(JSON.toJSONString(res));
             in.close();
@@ -78,7 +79,7 @@ public class ServerJuder {
             //System.out.println(f.toString());输出的是文件历经
 
         }
-
+        return rtn;//返回测试结果集
 
 
 //        for(Integer i=1;i<=Test.l.size();++i){
@@ -101,8 +102,6 @@ public class ServerJuder {
 //        }
 
 
-
-        return rtn;
     }
 
 }
