@@ -11,11 +11,11 @@ public class JudgeMsg {
     @JSONField(name = "UserId")
     private String UserId;
     @JSONField(name = "Code")
-    private String Path_Code;
-    private String Path_Judger="";
-    private String Path_Input;
-    private String Path_Output;
-    private String Path_Result;
+    private String Code;
+    private String Path_Judger="E:\\compile-main\\judger.exe";
+    private String Path_Input="E:\\compile-main\\in";
+    private String Path_Output="E:\\compile-main\\out";
+    private String Path_Result="E:\\compile-main";
     private String TimeLimit="1000";
     private String MemLimit="256";
 
@@ -75,12 +75,12 @@ public class JudgeMsg {
     }
 
 
-    public String getPath_Code() {
-        return Path_Code;
+    public String getCode() {
+        return Code;
     }
 
-    public void setPath_Code(String code) {
-        Path_Code = code;
+    public void setCode(String code) {
+        Code = code;
     }
 
 
@@ -111,19 +111,22 @@ public class JudgeMsg {
     public JudgeMsg(    String lang,
                         String Question,
                         String UserId,
-                        String pathCode,
+                        String Code
+                        /*,
+
                         String pathInput,
                         String pathOutput,
                         String pathResult
-
+                        */////这三个还是不要作为Json传输的的参数为好
                         ){
         this.lang=lang;
         this.QuestionId=Question;
         this.UserId=UserId;
-        this.Path_Code=pathCode;
+        this.Code=Code;
+        /*
         this.Path_Input=pathInput;
         this.Path_Output=pathOutput;
         this.Path_Result=pathResult;
-
+        */
     }
 }
