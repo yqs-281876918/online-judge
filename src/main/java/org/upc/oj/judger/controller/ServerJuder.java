@@ -34,6 +34,7 @@ public class ServerJuder {
          cmd=cmd.replace("inputpath",msg.getPath_Input());
          cmd=cmd.replace("outputpath",msg.getPath_Output());
          cmd=cmd.replace("codepath",msg.getPath_Code());
+        cmd=cmd.replace("codes",msg.getQuestionId());
          cmd=cmd.replace("resultpath",msg.getPath_Result());
          cmd=cmd.replace("timeouts","5000");
          cmd=cmd.replace("memlimits","256");
