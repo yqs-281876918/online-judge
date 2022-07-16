@@ -11,6 +11,46 @@ public class ResultMap {
     private int time_cost;
     @JSONField(name = "TestId")
     private String TestId;
+    @JSONField(name = "memory_cost")
+    private  float memory_cost;
+    @JSONField(name = "expect_output")
+    private String expect_output;
+    @JSONField(name = "actual_output")
+    private String actual_output;
+    @JSONField(name = "detail")
+    private  String detail;
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getExpect_output() {
+        return expect_output;
+    }
+
+    public void setExpect_output(String expect_output) {
+        this.expect_output = expect_output;
+    }
+
+    public String getActual_output() {
+        return actual_output;
+    }
+
+    public void setActual_output(String actual_output) {
+        this.actual_output = actual_output;
+    }
+
+    public float getMemory_cost() {
+        return memory_cost;
+    }
+
+    public void setMemory_cost(float memory_cost) {
+        this.memory_cost = memory_cost;
+    }
 
     public String getMsg_type() {
         return msg_type;
