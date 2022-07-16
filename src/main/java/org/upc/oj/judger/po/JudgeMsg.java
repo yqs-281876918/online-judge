@@ -12,6 +12,15 @@ public class JudgeMsg {
     private String UserId;
     @JSONField(name = "Code")
     private String Code;
+
+    /**
+     *
+     * 包含测试时用的默认值
+     * 正式调用时请务必调用各属性的Set方法！
+     *
+     * Default-Values
+     *
+     */
     private String Path_Code="E:\\compile-main";
     private String Path_Judger="E:\\compile-main\\judger.exe";
     private String Path_Input="E:\\compile-main\\in";
