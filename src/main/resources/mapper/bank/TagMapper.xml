@@ -3,7 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.upc.oj.bank.dao.TagMapper">
+    <!--插入标签-->
     <insert id="insertTag">
         insert into tag(title) values(#{title});
     </insert>
+    <!--获取标签信息-->
+    <select id="getTagList" resultType="Tag">
+        select * from tag
+    </select>
+    <!--删除标签-->
+    <delete id="delTagByTitle">
+        delete from tag where title=#{title}
+    </delete>
+
+
 </mapper>
