@@ -84,4 +84,17 @@ public class ResultMap {
         TestId = testId;
     }
 
+    @Override
+    public String toString() {
+        return "ResultMap{" +
+                "msg_type='" + msg_type + '\'' +
+                ", description='" + description + '\'' +
+                ", time_cost=" + time_cost +
+                ", TestId='" + TestId + '\'' +
+                ", memory_cost=" + memory_cost +
+                ", expect_output='" + expect_output + '\'' +
+                ", actual_output='" + actual_output + '\'' +
+                ", detail='" + detail + '\'' +
+                '}';
+    }
 }
