@@ -1,6 +1,7 @@
 package org.upc.oj.bank.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
 
 import java.util.List;
@@ -9,21 +10,44 @@ import java.util.List;
 public interface TagMapper {
     /**
      * 增加标签
-     * @param title
+     * @param title 标签名称
      * @return
      */
     public void insertTag(String title);
     /**
      * 查询所有标签
      * @param
-     * @return
+     * @return 标签集
      */
     public List<Tag> getTagList();
     /**
-     * 删除某title的标签
-     * @param title
+     * 删除标签
+     * @param ids 标签id集
      * @return
      */
-    public void delTagByTitle( String title);
-    public List<Tag> getTagByTitle(String title);
+    public void delTagByTitle( List<Integer> ids);
+
+    /**
+     * 修改某标签名称
+     * @param id,newTitle 标签id，新标签名
+     * @return
+     */
+    public void updateTagById(int id,String newTitle);
+
+    /**
+     * 查询某标签
+     * @param title 标签名
+     * @return 标签集
+     */
+    public List<Tag> getTagListByTitle(String title);
+
+    /**
+     * 获取某标签下的问题列表
+     * @param id 标签id
+     * @return 问题集
+     */
+    public List<Question> getQuestionListByTag(int id);
+
+
+
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.upc.oj.bank.dao.ContentMapper">
+
+    <!--修改问题信息-->
+    <update id="updateQuestion">
+
+    </update>
+
+    <!--增加问题-->
+</mapper>

@@ -13,8 +13,25 @@
     </select>
     <!--删除标签-->
     <delete id="delTagByTitle">
-        delete from tag where title=#{title}
+        delete from tag where id in (
+        <foreach collection="ids" item="id">
+            #{id}
+        </foreach>
+        )
     </delete>
-
-
+    <!--修改标签-->
+    <update id="updateTagById">
+        update tag set title=#{newTitle} where id=#{id}
+    </update>
+    <!--查询标签(模糊)-->
+    <select id="getTagListByTitle" resultType="org.upc.oj.bank.po.Tag">
+        <bind name="blockTitleLike" value="'%'+title+'%'"/>
+        select * from tag where title like #{blockTitleLike}
+    </select>
+    <!--根据标签查询问题-->
+    <select id="getQuestionListByTag" resultType="org.upc.oj.bank.po.Question">
+        select  id,title,difficulty from question where id in (
+            select qid from question_tag where tid=#{id})
+        and deleted=0
+    </select>
 </mapper>
