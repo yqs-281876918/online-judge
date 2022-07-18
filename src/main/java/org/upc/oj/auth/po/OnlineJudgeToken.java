@@ -1,4 +1,4 @@
-package org.upc.oj.auth;
+package org.upc.oj.auth.po;
 
 import lombok.Data;
 import lombok.ToString;

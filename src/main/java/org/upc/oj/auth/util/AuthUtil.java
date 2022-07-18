@@ -1,7 +1,7 @@
 package org.upc.oj.auth.util;
 
 import com.alibaba.fastjson.JSON;
-import org.upc.oj.auth.OnlineJudgeToken;
+import org.upc.oj.auth.po.OnlineJudgeToken;
 
 
 public class AuthUtil {

@@ -2,7 +2,7 @@ package org.upc.oj.auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.upc.oj.auth.OnlineJudgeToken;
+import org.upc.oj.auth.po.OnlineJudgeToken;
 import org.upc.oj.auth.dao.UserMapper;
 import org.upc.oj.auth.po.OJUser;
 import org.upc.oj.auth.util.AuthUtil;
