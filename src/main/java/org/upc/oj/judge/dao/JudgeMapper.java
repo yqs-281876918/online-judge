@@ -1,13 +1,13 @@
-package org.upc.oj.judger.dao;
+package org.upc.oj.judge.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.upc.oj.judger.po.IOData;
-import org.upc.oj.judger.po.Question;
+import org.upc.oj.bank.po.Question;
+import org.upc.oj.judge.po.QuestionIO;
 
 import java.util.List;
 
 @Mapper
 public interface JudgeMapper {
-    List<IOData> queryIOData(Integer qid);
+    List<QuestionIO> queryQuestionIO(Integer qid);
     Question queryQuestion(Integer id);
 }

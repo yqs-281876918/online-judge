@@ -2,8 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.upc.oj.auth.dao.UserMapper">
-    <select id="getUserList" resultType="org.upc.oj.auth.po.OJUser">
-        select username,identity from user where username=#{username} and password=#{password}
+<mapper namespace="org.upc.oj.judge.dao.JudgeMapper">
+    <select id="queryQuestionIO" resultType="org.upc.oj.judge.po.QuestionIO">
+        select `qid`,`input`,`output` from question_io where qid=#{qid};
+    </select>
+    <select id="queryQuestion" resultType="org.upc.oj.bank.po.Question">
+        select * from question where id=#{id};
     </select>
 </mapper>

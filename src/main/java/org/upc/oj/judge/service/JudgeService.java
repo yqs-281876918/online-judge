@@ -1,12 +1,15 @@
-package org.upc.oj.judger.service;
+package org.upc.oj.judge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.upc.oj.judger.config.JudgeConfig;
-import org.upc.oj.judger.dao.JudgeMapper;
-import org.upc.oj.judger.po.IOData;
+import org.upc.oj.file.util.FileUtil;
+import org.upc.oj.judge.bo.JudgeMsg;
+import org.upc.oj.judge.config.JudgeConfig;
+import org.upc.oj.judge.dao.JudgeMapper;
+import org.upc.oj.judge.po.QuestionIO;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,40 +19,44 @@ public class JudgeService {
     private JudgeMapper judgeMapper;
     @Autowired
     private JudgeConfig config;
-    public Map<String,Object> judge(Integer qid, String code,String username){
-        checkAndCreateIOFile(qid);//如果没有输入输出的缓存文件,就从数据库里读取并缓存
-        ProcessBuilder compileJava = new ProcessBuilder();
-        String commands=
-        compileJava.command("javac", path + "/Main.java");
-        Process compile_app = compileJava.start();
-        compile_app.waitFor();
+
+    public Map<String, Object> judge(JudgeMsg judgeMsg){
+        Map<String,Object> msg = new HashMap<>();
+        try {
+            //如果没有输入输出的缓存文件,就从数据库里读取并缓存
+            checkAndCreateIOFile(judgeMsg);
+            //将代码写成文件
+            FileUtil.writeToFile(judgeMsg.getCode_path(),judgeMsg.getCode());
+            //开始评测
+            ProcessBuilder judgeExeBuilder = new ProcessBuilder();
+            String[] commands = new String[]{config.judgeKernelPath, "-lang", judgeMsg.getLang(), "-code",
+                    judgeMsg.getCode_path(),"-input",judgeMsg.getInput_path(),"-output",judgeMsg.getOutput_path(),
+                    "-result",judgeMsg.getResult_path()};
+            judgeExeBuilder.command(String.join(" ",commands));
+            judgeExeBuilder.start();
+            msg.put("status","judging");
+            msg.put("description","评测提交成功");
+            return msg;
+        }catch (Exception e){
+            msg.put("status","failed");
+            msg.put("description","评测系统出错");
+            return msg;
+        }
     }
-    private void checkAndCreateIOFile(Integer qid){
-        String inputPath=config.ioCacheDir+qid+"/"+config.inputDir;
-        String outputPath=config.ioCacheDir+qid+"/"+config.outputDir;
-        File inputDirFile=new File(inputPath);
-        File outputDirFile=new File(outputPath);
-        if(inputDirFile.exists()&&inputDirFile.isDirectory()&&outputDirFile.exists()&&outputDirFile.exists()){
+
+    private void checkAndCreateIOFile(JudgeMsg judgeMsg) throws Exception {
+        if (FileUtil.isDirExist(judgeMsg.getInput_path())&&FileUtil.isDirExist(judgeMsg.getOutput_path())){
             return;
         }
-        inputDirFile.mkdirs();
-        outputDirFile.mkdirs();
-        List<IOData> ioDataList = judgeMapper.queryIOData(qid);
-        try {
-            for(int i=0;i<ioDataList.size();i++){
-                IOData data = ioDataList.get(i);
-                File inputFile=new File(inputPath+i+".in");
-                File outputFile=new File(outputPath+i+".out");
-                OutputStreamWriter inputWriter=new OutputStreamWriter(new FileOutputStream(inputFile));
-                OutputStreamWriter outputWriter=new OutputStreamWriter(new FileOutputStream(outputFile));
-                inputWriter.write(data.getInput());
-                outputWriter.write(data.getOutput());
-                inputWriter.close();
-                outputWriter.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        FileUtil.createDirs(judgeMsg.getInput_path());
+        FileUtil.createDirs(judgeMsg.getOutput_path());
+        List<QuestionIO> questionIoList = judgeMapper.queryQuestionIO(judgeMsg.getQid());
+        for (int i = 0; i < questionIoList.size(); i++) {
+            QuestionIO data = questionIoList.get(i);
+            String inputFilePath = judgeMsg.getInput_path() + i + ".in";
+            String outputFilePath = judgeMsg.getOutput_path() + i + ".out";
+            FileUtil.writeToFile(inputFilePath,data.getInput());
+            FileUtil.writeToFile(outputFilePath,data.getOutput());
         }
     }
-    private String createCommands()
 }
