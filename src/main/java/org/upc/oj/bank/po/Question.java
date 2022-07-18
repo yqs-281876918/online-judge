@@ -4,33 +4,12 @@ import lombok.Data;
 
 @Data
 public class Question {
-    private int id;
+    private Integer id;
     private String title;
-    private int difficulty;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    
+    private String content;
+    private Integer difficulty;
+    private Integer io_count;
+    private Integer timeout;
+    private Integer memory_limit;
+    private boolean deleted;
 }
