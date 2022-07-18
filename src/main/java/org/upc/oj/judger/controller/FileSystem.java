@@ -13,10 +13,11 @@ import java.util.List;
 public class FileSystem {
     FilePathInfo info=null;
     List<TestIOFile> testFiles=null;
-    public FileSystem(FilePathInfo info ,List<TestIOFile> testFiles){
+    private String Code;
+    public FileSystem(FilePathInfo info ,List<TestIOFile> testFiles,String Code){
         this.info=info;
         this.testFiles=testFiles;
-
+        this.Code=Code;
     }
 
     /**
@@ -49,15 +50,16 @@ public class FileSystem {
         if(testFiles==null)return 1;
         File f;
         FileOutputStream out;
-//        f=new File(info.getPath_code()+"\\main.code");
-//        try {
-//            out=new FileOutputStream(f);
-//            out.write(null);
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        f=new File(info.getPath_code()+"\\main."+info.getType_Code());
+        try {
+            out=new FileOutputStream(f);
+            out.write(Code.getBytes());
+            out.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         for(TestIOFile tp:testFiles){
 
@@ -99,10 +101,16 @@ public class FileSystem {
             for (File f : files) {
                // System.out.print("--");
                 boolean rst=delFile(f);
-                if(!rst) return rst;
+                if(!rst)
+                {
+                    System.out.println("DeleteFailed:"+f.getAbsolutePath());
+                    return rst;
+                }
+
             }
         }
         System.out.println("deleted:"+file.getAbsolutePath());
+
         return file.delete();
     }
 

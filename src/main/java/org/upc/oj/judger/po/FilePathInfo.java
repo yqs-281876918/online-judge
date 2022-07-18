@@ -7,6 +7,16 @@ public class FilePathInfo {
     private String Path_result;
     private String Path_code;
 
+    private String Type_Code;
+
+    public String getType_Code() {
+        return Type_Code;
+    }
+
+    public void setType_Code(String type_Code) {
+        Type_Code = type_Code;
+    }
+
     public String getPath_workSpace() {
         return Path_workSpace;
     }

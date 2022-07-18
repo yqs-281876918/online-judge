@@ -26,7 +26,7 @@ public class ServerJuder {
                 "-input=inputpath\\inputs.in " +
                 "-output=outputpath\\outputs.out " +
                 "-result=resultpath\\results.json " +
-                "-code=codepath\\codes.java " +
+                "-code=codepath\\main.codetype " +
                 "-timeout=timeouts " +
                 "-memory-limit=memlimits";
          cmd=cmd.replace("langs",msg.getLang());
@@ -34,7 +34,7 @@ public class ServerJuder {
          cmd=cmd.replace("inputpath",msg.getPath_Input());
          cmd=cmd.replace("outputpath",msg.getPath_Output());
          cmd=cmd.replace("codepath",msg.getPath_Code());
-        cmd=cmd.replace("codes",msg.getQuestionId());
+        cmd=cmd.replace("codetype",msg.getLang());
          cmd=cmd.replace("resultpath",msg.getPath_Result());
          cmd=cmd.replace("timeouts","5000");
          cmd=cmd.replace("memlimits","256");
@@ -61,9 +61,13 @@ public class ServerJuder {
                             replace("outputs",i.getId()).
                             replace("results",i.getId()));
             System.out.println("执行编译器");
+
             pid.waitFor();
+            Runtime.getRuntime().
+                    exec("taskkill /f /IM conhost.exe /t");
             System.out.println("运行结束");
             File f=new File(Msg.getPath_Result()+"\\"+i.getId()+".json");
+            if (!f.exists())continue;
             FileInputStream in=new FileInputStream(f);
             byte b[]=null;
             b=in.readAllBytes();
@@ -72,7 +76,7 @@ public class ServerJuder {
             rtn.add(res);
             System.out.println(JSON.toJSONString(res));
             in.close();
-            System.out.println(f.delete());
+            //System.out.println(f.delete());
             //Time.sleep(1000);
 
             //System.out.println(res.toString());//测试是否生成结果集成功
@@ -101,7 +105,6 @@ public class ServerJuder {
 //            //System.out.println(f.toString());输出的是文件历经
 //            in.close();
 //        }
-
 
     }
 
