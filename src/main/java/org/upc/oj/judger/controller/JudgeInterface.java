@@ -29,10 +29,11 @@ public class JudgeInterface {
     @RequestMapping("/judger")
     public String Judge(@RequestParam("judgerParam") String judgerParam )
     {
-        Judgerparam param=JSON.parseObject(judgerParam,Judgerparam.class);
+        Base64.Decoder base64_decoder = Base64.getDecoder();
+        Judgerparam param=JSON.parseObject(new String(base64_decoder.decode(judgerParam.getBytes())),Judgerparam.class);
 
        // Base64.Encoder base64_encoder = Base64.getEncoder();
-        Base64.Decoder base64_decoder = Base64.getDecoder();
+
         String DeCode=new String(base64_decoder.decode(param.getCode()));
         System.out.println(SubString.cutString(DeCode,"class","{"));
         System.out.println("userid:"+param.getUserid());
