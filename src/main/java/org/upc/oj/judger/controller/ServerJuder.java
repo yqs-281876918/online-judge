@@ -72,8 +72,10 @@ public class ServerJuder {
                 File f=new File(Msg.getFilePathInfo().getPath_result()+"\\"+i.getId()+".json");
                 if (!f.exists())continue;
                 FileInputStream in=new FileInputStream(f);
-                byte b[]=null;
-                b=in.readAllBytes();
+                Long len=f.length();
+                byte b[]=new byte[len.intValue()];
+                //b=in.readAllBytes();
+                in.read(b);
 
                 ResultMap res=JSON.parseObject(new String(b),ResultMap.class);
                 res.setTestId(i.getId());
