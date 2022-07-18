@@ -1,4 +1,4 @@
-package org.upc.oj.judger.config;
+package org.upc.oj.judge.config;
 
 import org.springframework.stereotype.Component;
 

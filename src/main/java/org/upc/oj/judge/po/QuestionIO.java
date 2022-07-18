@@ -6,7 +6,7 @@ import lombok.Data;
  * IO数据实体类
  */
 @Data
-public class IOData {
+public class QuestionIO {
     private Integer qid;
     private String input;
     private String output;

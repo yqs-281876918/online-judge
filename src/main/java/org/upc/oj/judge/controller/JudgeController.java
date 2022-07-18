@@ -1,22 +1,47 @@
-package org.upc.oj.judger.controller;
+package org.upc.oj.judge.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.upc.oj.judger.service.JudgeService;
+import org.upc.oj.bank.po.Question;
+import org.upc.oj.bank.service.QuestionService;
+import org.upc.oj.judge.bo.JudgeMsg;
+import org.upc.oj.judge.config.JudgeConfig;
+import org.upc.oj.judge.config.Language;
+import org.upc.oj.judge.dao.JudgeMapper;
+import org.upc.oj.judge.dto.JudgeRequestParam;
+import org.upc.oj.judge.service.JudgeService;
 
-import java.util.HashMap;
 import java.util.Map;
 
-@RestController("judge")
+@RestController
+@RequestMapping("judge")
 public class JudgeController {
     @Autowired
     private JudgeService judgeService;
-    @PostMapping("code")
-    public Map<String,Object> judge(Integer qid, String code){
-        String username="yqs";
-        return judgeService.judge(qid,code,username);
+    @Autowired
+    private JudgeConfig config;
+    @Autowired
+    private QuestionService questionService;
+    @Autowired
+    private JudgeMapper judgeMapper;
+
+    @PostMapping("/code")
+    public Map<String, Object> judge(@RequestBody JudgeRequestParam param) {
+        JudgeMsg judgeMsg = new JudgeMsg();
+        judgeMsg.setQid(param.getQid());
+        judgeMsg.setLang(param.getLangType().toLowerCase());
+        judgeMsg.setCode(param.getCode());
+        judgeMsg.setCode_path(config.workDir + param.getUsername() + "/" + param.getQid() + "/" + Language.getCodeFilename(param.getLangType()));
+        judgeMsg.setInput_path(config.ioCacheDir + param.getQid() + "/" + config.inputDir);
+        judgeMsg.setOutput_path(config.ioCacheDir + param.getQid() + "/" + config.outputDir);
+        judgeMsg.setResult_path(config.workDir + param.getUsername() + "/" + param.getQid() + "/");
+        Question question = judgeMapper.queryQuestion(param.getQid());
+        judgeMsg.setTimeout(question.getTimeout());
+        judgeMsg.setMemory_limit(question.getMemory_limit());
+        return judgeService.judge(judgeMsg);
     }
 
 }

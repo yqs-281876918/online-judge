@@ -1,22 +1,22 @@
-package org.upc.oj.judge.po;
+package org.upc.oj.judge.bo;
 
+import lombok.Data;
 import lombok.Getter;
 import org.upc.oj.judge.config.JudgeConfig;
+import org.upc.oj.judge.dto.JudgeRequestParam;
 
-@Getter
+import java.util.Locale;
+
+@Data
 public class JudgeMsg {
-    private String lang;
     private Integer qid;
+    private String lang;
     private String code;
+    private String code_path;
     private String input_path;
     private String output_path;
+    private String result_path;
     private Integer timeout;
     private Integer memory_limit;
-    private JudgeMsg(){}
-    public JudgeMsg create(Integer qid,String lang,String code){
-        this.lang=lang;
-        this.qid=qid;
-        this.code=code;
-        input_path= JudgeConfig.ioCacheDir+
-    }
+    public JudgeMsg(){}
 }
