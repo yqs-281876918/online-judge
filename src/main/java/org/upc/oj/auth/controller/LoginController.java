@@ -45,6 +45,7 @@ public class LoginController {
         Cookie token_cookie = new Cookie("token", token);
         token_cookie.setMaxAge((int) (LoginService.lifeTime / 1000));
         response.addCookie(token_cookie);
+
         return msg;
     }
     @PostMapping(path="/logout")
