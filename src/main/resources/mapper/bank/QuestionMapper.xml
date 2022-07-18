@@ -21,6 +21,11 @@
         </where>
     </select>
 
+    <!--查询题目完整信息-->
+    <select id="getQuestionInf" resultType="org.upc.oj.bank.po.Question">
+        select * from question where id=#{id}
+    </select>
+
     <!--查询某题的标签-->
     <select id="getQuestionTag" resultType="org.upc.oj.bank.po.Tag">
         select t.* from question_tag q,tag t where q.tid=t.id and q.qid=#{id}
@@ -51,6 +56,11 @@
         </foreach>
     </insert>
 
+    <!--添加题目-->
 
+
+
+
+    <!--修该题目-->
 
 </mapper>

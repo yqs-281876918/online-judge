@@ -17,6 +17,13 @@ public interface QuestionMapper {
     public List<Question> getQuestionList(Question q);
 
     /**
+     * 获取问题详细信息
+     * @param id 题目id
+     * @return 问题对象
+     */
+    public Question getQuestionInf(int id);
+
+    /**
      * 获取问题标签
      * @param id 问题id
      * @return 标签集
@@ -28,20 +35,21 @@ public interface QuestionMapper {
      * @param id 问题id
      * @return
      */
-    public void delQuestionById(int id);
+    public int delQuestionById(int id);
 
     /**
      * 删除题目标签
      * @param qid,tid 问题qid,标签tid
      * @return
      */
-    public void delQuestionTags(int qid,List<Integer> tids);
+    public int delQuestionTags(int qid,List<Integer> tids);
+
 
     /**
      * 添加题目标签
      * @param qid,tid 问题qid,标签tid
      * @return
      */
-    public void addQuestionTags(int qid,List<Integer> tids);
+    public int addQuestionTags(int qid,List<Integer> tids);
 
 }

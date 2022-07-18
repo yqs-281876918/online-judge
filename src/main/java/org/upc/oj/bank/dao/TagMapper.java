@@ -13,7 +13,7 @@ public interface TagMapper {
      * @param title 标签名称
      * @return
      */
-    public void insertTag(String title);
+    public int insertTag(String title);
     /**
      * 查询所有标签
      * @param
@@ -25,14 +25,14 @@ public interface TagMapper {
      * @param ids 标签id集
      * @return
      */
-    public void delTagByTitle( List<Integer> ids);
+    public int delTagByTitle( List<Integer> ids);
 
     /**
      * 修改某标签名称
      * @param id,newTitle 标签id，新标签名
      * @return
      */
-    public void updateTagById(int id,String newTitle);
+    public int updateTagById(int id,String newTitle);
 
     /**
      * 查询某标签

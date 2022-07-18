@@ -56,7 +56,8 @@ public class TagController {
     public Map<String,Object> delTagByTitle(@RequestParam("ids")List<Integer> ids){
         Map<String,Object> map=new HashMap<>();
         try {
-            tagService.delTagByTitle(ids);
+            int delCount=tagService.delTagByTitle(ids);
+            map.put("delCount",delCount);
         }catch (RuntimeException e){
             map.put("status","error");
             map.put("delCount",0);
@@ -64,7 +65,6 @@ public class TagController {
             return map;
         }
         map.put("status","success");
-        map.put("delCount",ids.size());
         map.put("msg","删除成功");
         return map;
     }

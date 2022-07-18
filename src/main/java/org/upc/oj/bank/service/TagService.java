@@ -21,8 +21,8 @@ public class TagService {
      * @param title
      * @return
      */
-    public void createTag(String title) throws RuntimeException{
-        tagMapper.insertTag(title);
+    public int createTag(String title) throws RuntimeException{
+        return tagMapper.insertTag(title);
     }
     /**
      * 查询所有标签
@@ -37,16 +37,16 @@ public class TagService {
      * @param ids
      * @return
      */
-    public void delTagByTitle(List<Integer> ids) throws RuntimeException{
-        tagMapper.delTagByTitle(ids);
+    public int  delTagByTitle(List<Integer> ids) throws RuntimeException{
+        return tagMapper.delTagByTitle(ids);
     }
     /**
      * 修改某标签名称
      * @param id,newName
      * @return
      */
-    public void updateTagById(int id,String newTitle) throws RuntimeException{
-        tagMapper.updateTagById(id,newTitle);
+    public int  updateTagById(int id,String newTitle) throws RuntimeException{
+        return tagMapper.updateTagById(id,newTitle);
     }
     /**
      * 查询某标签

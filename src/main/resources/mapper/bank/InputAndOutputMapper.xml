@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.upc.oj.bank.dao.InputAndOutputMapper">
+
+    <!--查询题目输入输出-->
+    <select id="getInputAndOutput" resultType="org.upc.oj.bank.po.InputAndOutput">
+        select id,input,output from question_io where qid=#{qid}
+    </select>
+
+    <!--删除输入输出-->
+    <delete id="delInputAndOutPut">
+        delete from question_io where qid=#{qid}
+        <if test="ids !=null and ids!=''">
+            and id in(
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </delete>
+
+    <!--添加输入输出-->
+    <insert id="addInputAndOutPut">
+        insert into question_io
+        <foreach collection="inAndOuts"  item="inAndOut" open="values" separator=",">
+            (null,#{qid},#{inAndOut.input},#{inAndOut.output})
+        </foreach>
+    </insert>
+
+    <!--更改题目输入输出-->
+</mapper>
