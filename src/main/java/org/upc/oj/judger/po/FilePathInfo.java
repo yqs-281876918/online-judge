@@ -6,8 +6,18 @@ public class FilePathInfo {
     private String Path_out;
     private String Path_result;
     private String Path_code;
-
+    private String Path_root;
     private String Type_Code;
+
+
+    public String getPath_root() {
+        return Path_root;
+    }
+
+    public void setPath_root(String path_root) {
+        Path_root = path_root;
+    }
+
 
     public String getType_Code() {
         return Type_Code;

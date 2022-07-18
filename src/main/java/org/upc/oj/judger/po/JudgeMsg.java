@@ -3,6 +3,8 @@ package org.upc.oj.judger.po;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.mysql.cj.Session;
 
+import java.util.List;
+
 public class JudgeMsg {
     @JSONField(name = "lang")
     private String lang;
@@ -12,6 +14,23 @@ public class JudgeMsg {
     private String UserId;
     @JSONField(name = "Code")
     private String Code;
+    private FilePathInfo filePathInfo;
+    private List<TestIOFile>testIOFiles;
+    public FilePathInfo getFilePathInfo() {
+        return filePathInfo;
+    }
+
+    public List<TestIOFile> getTestIOFiles() {
+        return testIOFiles;
+    }
+
+    public void setTestIOFiles(List<TestIOFile> testIOFiles) {
+        this.testIOFiles = testIOFiles;
+    }
+
+    public void setFilePathInfo(FilePathInfo filePathInfo) {
+        this.filePathInfo = filePathInfo;
+    }
 
     /**
      *
@@ -21,21 +40,12 @@ public class JudgeMsg {
      * Default-Values
      *
      */
-    private String Path_Code="E:\\compile-main";
+
     private String Path_Judger="E:\\compile-main\\judger.exe";
-    private String Path_Input="E:\\compile-main\\in";
-    private String Path_Output="E:\\compile-main\\out";
-    private String Path_Result="E:\\compile-main";
+
     private String TimeLimit="1000";
     private String MemLimit="256";
 
-    public String getPath_Code() {
-        return Path_Code;
-    }
-
-    public void setPath_Code(String path_Code) {
-        Path_Code = path_Code;
-    }
 
     public String getTimeLimit() {
         return TimeLimit;
@@ -67,29 +77,7 @@ public class JudgeMsg {
         Path_Judger = path_Judger;
     }
 
-    public String getPath_Input() {
-        return Path_Input;
-    }
 
-    public void setPath_Input(String path_Input) {
-        Path_Input = path_Input;
-    }
-
-    public String getPath_Output() {
-        return Path_Output;
-    }
-
-    public void setPath_Output(String path_Output) {
-        Path_Output = path_Output;
-    }
-
-    public String getPath_Result() {
-        return Path_Result;
-    }
-
-    public void setPath_Result(String path_Result) {
-        Path_Result = path_Result;
-    }
 
 
     public String getCode() {
@@ -128,7 +116,9 @@ public class JudgeMsg {
     public JudgeMsg(    String lang,
                         String Question,
                         String UserId,
-                        String Code
+                        String Code,
+                        FilePathInfo filePathInfo,
+                        List<TestIOFile> testIOFiles
                         /*,
 
                         String pathInput,
@@ -140,6 +130,10 @@ public class JudgeMsg {
         this.QuestionId=Question;
         this.UserId=UserId;
         this.Code=Code;
+        this.filePathInfo=filePathInfo;
+        this.testIOFiles=testIOFiles;
+
+
         /*
         this.Path_Input=pathInput;
         this.Path_Output=pathOutput;

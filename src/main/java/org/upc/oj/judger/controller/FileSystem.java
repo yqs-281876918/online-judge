@@ -18,6 +18,7 @@ public class FileSystem {
         this.info=info;
         this.testFiles=testFiles;
         this.Code=Code;
+
     }
 
     /**
@@ -31,19 +32,23 @@ public class FileSystem {
      * 4：输出用例目录创建失败！
      * 5：测试结果目录创建失败！
      * 6: 目录信息有误！
+     * 7: 创建工作空间根目录失败！
      */
     public int  CreateDir()  {
+
         if (info==null)return 6;
-        File f=new File(info.getPath_workSpace());
-        if(!f.mkdir())return 1;
+        File f=new File(info.getPath_root());
+        if(!f.mkdir()&&!f.exists())return 7;
+        f=new File(info.getPath_workSpace());
+        if(!f.mkdir()&&!f.exists())return 1;
         f=new File(info.getPath_code());
-        if(!f.mkdir())return 2;
+        if(!f.mkdir()&&!f.exists())return 2;
         f=new File(info.getPath_in());
-        if(!f.mkdir())return 3;
+        if(!f.mkdir()&&!f.exists())return 3;
         f=new File(info.getPath_out());
-        if(!f.mkdir())return 4;
+        if(!f.mkdir()&&!f.exists())return 4;
         f=new File(info.getPath_result());
-        if(!f.mkdir())return 5;
+        if(!f.mkdir()&&!f.exists())return 5;
         return 0;
     }
     public int CreateUserFiles(){

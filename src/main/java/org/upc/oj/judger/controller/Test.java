@@ -68,6 +68,7 @@ public class Test {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        /*
         JudgeMsg msg=new JudgeMsg("java","App","",Code);
         msg.setPath_Code(info.getPath_code());
         msg.setPath_Input(info.getPath_in());
@@ -90,7 +91,7 @@ public class Test {
             throw new RuntimeException(e);
         }
         fs.DeleteAll();
-
+        */
         // System.out.println(fs.DeleteAll());
 //
 //        try {
