@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 
 import org.upc.oj.judger.po.JudgeMsg;
 import org.upc.oj.judger.po.ResultMap;
+import org.upc.oj.judger.po.StaticLib;
 import org.upc.oj.judger.po.TestIOFile;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class ServerJuder {
                 "-input=inputpath\\inputs.in " +
                 "-output=outputpath\\outputs.out " +
                 "-result=resultpath\\results.json " +
-                "-code=codepath\\main.codetype " +
+                "-code=codepath\\codename " +
                 "-timeout=timeouts " +
                 "-memory-limit=memlimits";
          cmd=cmd.replace("langs",msg.getFilePathInfo().getType_Code());
@@ -31,7 +32,7 @@ public class ServerJuder {
          cmd=cmd.replace("inputpath",msg.getFilePathInfo().getPath_in());      //
          cmd=cmd.replace("outputpath",msg.getFilePathInfo().getPath_out());    //
          cmd=cmd.replace("codepath",msg.getFilePathInfo().getPath_code());        //
-        cmd=cmd.replace("codetype",msg.getFilePathInfo().getType_Code());
+        cmd=cmd.replace("codename", StaticLib.getCodeFilename(msg.getFilePathInfo().getType_Code()));
          cmd=cmd.replace("resultpath",msg.getFilePathInfo().getPath_result());    //
          cmd=cmd.replace("timeouts",msg.getTimeLimit());
          cmd=cmd.replace("memlimits",msg.getTimeLimit());

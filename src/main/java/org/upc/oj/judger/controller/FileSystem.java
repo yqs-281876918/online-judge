@@ -1,6 +1,7 @@
 package org.upc.oj.judger.controller;
 
 import org.upc.oj.judger.po.FilePathInfo;
+import org.upc.oj.judger.po.StaticLib;
 import org.upc.oj.judger.po.TestIOFile;
 
 import java.io.File;
@@ -55,7 +56,7 @@ public class FileSystem {
         if(testFiles==null)return 1;
         File f;
         FileOutputStream out;
-        f=new File(info.getPath_code()+"\\main."+info.getType_Code());
+        f=new File(info.getPath_code()+"\\"+ StaticLib.getCodeFilename(info.getType_Code()));
         try {
             out=new FileOutputStream(f);
             out.write(Code.getBytes());
