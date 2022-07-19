@@ -1,9 +1,8 @@
 package org.upc.oj.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.upc.oj.auth.dto.LoginRequestParam;
 import org.upc.oj.auth.service.LoginService;
 
 import javax.servlet.http.Cookie;
@@ -20,18 +19,23 @@ public class LoginController {
     /**
      * 登录认证
      *
-     * @param username 用户名
-     * @param password 密码
+     * @param param    请求body
      * @param response 略
      * @return 返回认证结果json
      */
     @PostMapping(path = "/login")
-    public Map<String, String> getToken(String username, String password, HttpServletResponse response) {
-        if(username==null){
-            username="";
+    public Map<String, String> getToken(@RequestBody(required = false) LoginRequestParam param, HttpServletResponse response) {
+        String username = null;
+        String password = null;
+        if (param != null) {
+            username = param.getUsername();
+            password = param.getPassword();
         }
-        if(password==null){
-            password="";
+        if (username == null) {
+            username = "";
+        }
+        if (password == null) {
+            password = "";
         }
         String token = loginService.getTokenByLogin(username, password);
         Map<String, String> msg = new HashMap<>();
@@ -48,13 +52,14 @@ public class LoginController {
 
         return msg;
     }
-    @PostMapping(path="/logout")
+
+    @PostMapping(path = "/logout")
     public Map<String, String> getToken(HttpServletResponse response) {
-        Cookie cookie = new Cookie("token","");
+        Cookie cookie = new Cookie("token", "");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        Map<String,String> msg=new HashMap<>();
-        msg.put("status","success");
+        Map<String, String> msg = new HashMap<>();
+        msg.put("status", "success");
         return msg;
     }
 }

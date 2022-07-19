@@ -36,6 +36,12 @@ public class OnlineJudgeToken {
     }
 
     /**
+     * 无惨构造函数，供json反序列化使用
+     */
+    public OnlineJudgeToken(){
+    }
+
+    /**
      * 判断该token对象是否过期
      *
      * @return false:未过期 true:过期

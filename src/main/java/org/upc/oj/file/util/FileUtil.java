@@ -16,6 +16,7 @@ public class FileUtil {
         if(file.isDirectory()){
             return;
         }
+        file.createNewFile();
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filepath));
         writer.write(content);
         writer.close();

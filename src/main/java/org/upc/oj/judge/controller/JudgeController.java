@@ -1,10 +1,8 @@
 package org.upc.oj.judge.controller;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.service.QuestionService;
 import org.upc.oj.judge.bo.JudgeMsg;
@@ -42,6 +40,16 @@ public class JudgeController {
         judgeMsg.setTimeout(question.getTimeout());
         judgeMsg.setMemory_limit(question.getMemory_limit());
         return judgeService.judge(judgeMsg);
+    }
+
+    @GetMapping("/name")
+    public String name(){
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "55";
     }
 
 }
