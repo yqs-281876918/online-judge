@@ -1,6 +1,7 @@
 package org.upc.oj.bank.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
 
@@ -12,9 +13,11 @@ public interface QuestionMapper {
     /**
      * 获取问题列表
      * @param q question对象
+     * @param start 问题起始位置
+     * @param pageSize 每页问题数量
      * @return 问题集
      */
-    public List<Question> getQuestionList(Question q);
+    public List<Question> getQuestionList(@Param("q") Question q, @Param("start") int start,@Param("pageSize") int pageSize);
 
     /**
      * 获取问题详细信息
@@ -39,7 +42,8 @@ public interface QuestionMapper {
 
     /**
      * 删除题目标签
-     * @param qid,tid 问题qid,标签tid
+     * @param qid 问题qid
+     * @param tids 标签tid
      * @return
      */
     public int delQuestionTags(int qid,List<Integer> tids);
@@ -47,9 +51,30 @@ public interface QuestionMapper {
 
     /**
      * 添加题目标签
-     * @param qid,tid 问题qid,标签tid
+     * @param qid 问题qid
+     * @param tids 标签tids
      * @return
      */
     public int addQuestionTags(int qid,List<Integer> tids);
 
+    /**
+     * 添加题目
+     * @param q 问题对象
+     * @return
+     */
+    public int addQuestion(Question q);
+
+    /**
+     * 修改题目
+     * @param q 问题对象
+     * @return
+     */
+    public int updateQuestion(Question q);
+
+    /**
+     * 获取题目总数量
+     * @param q 问题对象
+     * @return
+     */
+    public int getQuestionCount(Question q);
 }

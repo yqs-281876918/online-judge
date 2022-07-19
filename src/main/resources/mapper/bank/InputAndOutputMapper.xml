@@ -28,5 +28,4 @@
         </foreach>
     </insert>
 
-    <!--更改题目输入输出-->
 </mapper>

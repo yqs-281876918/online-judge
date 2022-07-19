@@ -29,7 +29,8 @@ public interface TagMapper {
 
     /**
      * 修改某标签名称
-     * @param id,newTitle 标签id，新标签名
+     * @param id,newTitle 标签id
+     * @param newTitle 新标签名
      * @return
      */
     public int updateTagById(int id,String newTitle);
