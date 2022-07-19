@@ -71,7 +71,7 @@ public class FileSystem {
             try {
                 f=new File(info.getPath_in()+"\\"+tp.getId()+".in");
                 out=new FileOutputStream(f);
-                out.write(tp.getInnput().getBytes());
+                out.write(tp.getInput().getBytes());
                 out.close();
                 f=new File(info.getPath_out()+"\\"+tp.getId()+".out");
                 out=new FileOutputStream(f);

@@ -54,7 +54,7 @@ public class ServerJuder {
 
 
             for(TestIOFile i :Msg.getTestIOFiles()){
-                System.out.println(i.getInnput());
+                System.out.println(i.getInput());
                 Process pid= null;
 
                     pid = Runtime.getRuntime().

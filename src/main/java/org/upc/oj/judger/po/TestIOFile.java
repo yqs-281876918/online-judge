@@ -1,8 +1,8 @@
 package org.upc.oj.judger.po;
 
 public class TestIOFile {
-    private String Innput;
-    private String Output;
+    private String input;
+    private String output;
     private  String id;
 
     public String getId() {
@@ -13,19 +13,28 @@ public class TestIOFile {
         this.id = id;
     }
 
-    public String getInnput() {
-        return Innput;
+    public String getInput() {
+        return input;
     }
 
-    public void setInnput(String innput) {
-        Innput = innput;
+    public void setInput(String innput) {
+        input = innput;
     }
 
     public String getOutput() {
-        return Output;
+        return output;
     }
 
     public void setOutput(String output) {
-        Output = output;
+        this.output = output;
+    }
+
+    @Override
+    public String toString() {
+        return "TestIOFile{" +
+                "input='" + input + '\'' +
+                ", output='" + output + '\'' +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

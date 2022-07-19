@@ -2,10 +2,12 @@ package org.upc.oj.judger.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.upc.oj.judger.dao.DBS;
 import org.upc.oj.judger.dao.Database;
 import org.upc.oj.judger.po.*;
 import org.upc.oj.judger.service.SubString;
@@ -17,7 +19,8 @@ import java.util.List;
 @RestController
 public class JudgeInterface {
     private static String root="E:\\compile-main";
-
+    @Autowired
+    DBS db;
     /**
      *
      * @param userid
@@ -45,10 +48,11 @@ public class JudgeInterface {
         filePathInfo.setPath_result(filePathInfo.getPath_workSpace()+"\\result");
         filePathInfo.setPath_code(filePathInfo.getPath_workSpace()+"\\code");
         filePathInfo.setType_Code(param.getLanTp());
-        Database db=new Database();
-        db.Connect2Database();
         List<TestIOFile>testIOFiles= db.GetTestByQid(param.getQuestionid());
-        db.ShutDownCon();
+//        Database db=new Database();
+//        db.Connect2Database();
+//        List<TestIOFile>testIOFiles= db.GetTestByQid(param.getQuestionid());
+//        db.ShutDownCon();
         FileSystem fileSystem=new FileSystem(filePathInfo,testIOFiles,DeCode);
         fileSystem.CreateDir();
         fileSystem.CreateUserFiles();
@@ -61,8 +65,7 @@ public class JudgeInterface {
         rtn.setData(JSON.toJSONString(rlt));
         return JSON.toJSONString(rtn);
     }
-
-
+//
 
 
 }
