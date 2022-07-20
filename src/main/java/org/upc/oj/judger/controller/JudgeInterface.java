@@ -10,6 +10,7 @@ import org.upc.oj.judger.po.*;
 import org.upc.oj.judger.service.SubString;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,12 +55,14 @@ public class JudgeInterface {
      *              actual_output
      *              detail
      *          }
-     *     info：
+     *     info:
+     *          提示消息
      * }
      */
     @RequestMapping("/judger")
     public String Judge(@RequestParam("judgerParam") String judgerParam )
     {
+        long time_cut=new Date().getTime();
         Base64.Decoder base64_decoder = Base64.getDecoder();
         Judgerparam param=JSON.parseObject(new String(base64_decoder.decode(judgerParam.getBytes())),Judgerparam.class);
 
@@ -91,7 +94,14 @@ public class JudgeInterface {
         Information rtn= new Information();
         rtn.setCode(0);
         rtn.setData(JSON.toJSONString(rlt));
-        return JSON.toJSONString(rtn);
+        String Srtn=JSON.toJSONString(rtn);
+        JudgeLogMap map=new JudgeLogMap();
+        map.setUsername(param.getUserid());
+        map.setQid(new Integer(param.getQuestionid()));
+        map.setResult(Srtn );
+        map.setTime_cut(time_cut);
+        db.InsertJudgeLog(map);
+        return Srtn;
     }
 //
 

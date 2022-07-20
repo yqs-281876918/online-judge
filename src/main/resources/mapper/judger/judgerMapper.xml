@@ -5,5 +5,11 @@
 <mapper namespace="org.upc.oj.judger.dao.DBS">
 <select id="GetTestByQid" resultType="org.upc.oj.judger.po.TestIOFile">
     SELECT *FROM question_io WHERE qid=#{Qid}
-</select>
+    </select>
+    <select id="GetJudgeLog"  resultType="org.upc.oj.judger.po.JudgeLogMap">
+        SELECT *FROM submit WHERE username=#{username} AND qid=#{qid}
+    </select>
+    <insert id="InsertJudgeLog" parameterType="org.upc.oj.judger.po.JudgeLogMap">
+        INSERT INTO submit VALUES (#{id},#{username},#{qid},#{result},#{time_cut});
+    </insert>
 </mapper>
