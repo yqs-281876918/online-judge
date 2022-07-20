@@ -42,7 +42,8 @@ public class TagService {
     }
     /**
      * 修改某标签名称
-     * @param id,newName
+     * @param id, 标签id
+     * @param newTitle 新标签名
      * @return
      */
     public int  updateTagById(int id,String newTitle) throws RuntimeException{

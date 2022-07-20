@@ -7,23 +7,24 @@
     <select id="getQuestionList" resultType="org.upc.oj.bank.po.Question">
         select id,title,difficulty from question
         <where>
-            <if test="id!=null and id!=''">
-                and id=#{id}
+            <if test="q.id!=null and q.id!=''">
+                and id=#{q.id}
             </if>
-            <if test="title!=null and title!=''">
-                <bind name="blockTitleLike" value="'%'+title+'%'"/>
+            <if test="q.title!=null and q.title!=''">
+                <bind name="blockTitleLike" value="'%'+q.title+'%'"/>
                 and title like #{blockTitleLike}
             </if>
-            <if test="difficulty!=null and difficulty!=''">
-                and difficulty=#{difficulty}
+            <if test="q.difficulty!=null and q.difficulty!=''">
+                and difficulty=#{q.difficulty}
             </if>
             and deleted=0
         </where>
+        limit #{start},#{pageSize}
     </select>
 
     <!--查询题目完整信息-->
     <select id="getQuestionInf" resultType="org.upc.oj.bank.po.Question">
-        select * from question where id=#{id}
+        select * from question where id=#{id} and deleted=0
     </select>
 
     <!--查询某题的标签-->
@@ -57,10 +58,52 @@
     </insert>
 
     <!--添加题目-->
-
-
-
-
+    <insert id="addQuestion">
+        insert into question values(null,#{title},#{content},#{difficulty},#{io_count},#{timeout},#{memory_limit},#{deleted})
+    </insert>
+    
     <!--修该题目-->
+    <update id="updateQuestion">
+        update question
+        <set>
+            <if test="title!=null and title!=''">
+                title=#{title},
+            </if>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+            <if test="difficulty!=null and difficulty!=''">
+                difficulty=#{difficulty},
+            </if>
+            <if test="io_count!=null and io_count!=''">
+                io_count=#{io_count},
+            </if>
+            <if test="timeout!=null and timeout!=''">
+                timeout=#{timeout},
+            </if>
+            <if test="memory_limit!=null and memory_limit!=''">
+                memory_limit=#{memory_limit}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--获取问题总数量-->
+    <select id="getQuestionCount" resultType="java.lang.Integer">
+        select count(*) from question
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="title!=null and title!=''">
+                <bind name="blockTitleLike" value="'%'+title+'%'"/>
+                and title like #{blockTitleLike}
+            </if>
+            <if test="difficulty!=null and difficulty!=''">
+                and difficulty=#{difficulty}
+            </if>
+            and deleted=0
+        </where>
+    </select>
 
 </mapper>

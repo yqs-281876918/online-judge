@@ -16,10 +16,12 @@ public class QuestionService {
     /**
      * 获取问题列表
      * @param q question对象
+     * @param start 问题起始位置
+     * @param pageSize 每页问题数量
      * @return 问题集
      */
-    public List<Question> getQuestionList(Question q) throws RuntimeException{
-        return questionMapper.getQuestionList(q);
+    public List<Question> getQuestionList(Question q,int start,int pageSize) throws RuntimeException{
+        return questionMapper.getQuestionList(q,start,pageSize);
     }
 
     /**
@@ -49,7 +51,8 @@ public class QuestionService {
     }
     /**
      * 删除题目标签
-     * @param qid,tid 问题qid,标签tid
+     * @param qid 问题qid
+     * @param tids 标签tids
      * @return
      */
     public int delQuestionTags(int qid,List<Integer> tids) throws RuntimeException{
@@ -58,10 +61,38 @@ public class QuestionService {
 
     /**
      * 添加题目标签
-     * @param qid,tid 问题qid,标签tid
+     * @param qid 问题qid
+     * @param tids 标签tids
      * @return
      */
     public int addQuestionTags(int qid,List<Integer> tids) throws RuntimeException{
         return questionMapper.addQuestionTags(qid,tids);
+    }
+
+    /**
+     * 添加题目
+     * @param q 问题对象
+     * @return
+     */
+    public int addQuestion(Question q)throws RuntimeException{
+        return questionMapper.addQuestion(q);
+    }
+
+    /**
+     * 修改题目
+     * @param q 问题对象
+     * @return
+     */
+    public int updateQuestion(Question q){
+        return questionMapper.updateQuestion(q);
+    }
+
+    /**
+     * 获取题目总数量
+     * @param q 问题对象
+     * @return
+     */
+    public int getQuestionCount(Question q){
+        return questionMapper.getQuestionCount(q);
     }
 }

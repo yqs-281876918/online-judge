@@ -58,7 +58,7 @@ public class InputAndOutputController {
         return map;
     }
 
-    //添加输入输出-----------------------
+    //添加输入输出
     @PostMapping("/question/io")
     public Map<String,Object> addInputAndOutput(@RequestBody IORequestData ioData){
         Map<String,Object> map=new HashMap<>();

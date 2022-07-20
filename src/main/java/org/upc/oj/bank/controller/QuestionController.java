@@ -20,18 +20,28 @@ public class QuestionController {
 
     //获取问题列表
     @GetMapping("/questions")
-    public Map<String,Object> getQuestionList(Question q) {
+    public Map<String,Object> getQuestionList(Question q,int curPage,int pageSize) {
         Map<String,Object> map=new HashMap<>();
         try{
-            List<Question> questionList=questionService.getQuestionList(q);
+            int start=(curPage-1)*pageSize;
+            List<Question> questionList=questionService.getQuestionList(q,start,pageSize);
+            int totalCount=questionService.getQuestionCount(q);
             map.put("status","success");
             map.put("questionList",questionList);
-            map.put("count",questionList.size());
+            map.put("count",questionList.size());//该页数量
+            map.put("totalCount",totalCount);//符合某条件问题总数量
+            map.put("pageCount",totalCount/pageSize+1);//一共多少页
+            map.put("curPage",curPage);//目前页数
+            map.put("pageSize",pageSize);//每页数量
             map.put("msg","查询成功");
         }catch (RuntimeException e){
             map.put("status","error");
             map.put("questionList",null);
             map.put("count",0);
+            map.put("totalCount",0);
+            map.put("pageCount",0);
+            map.put("curPage",curPage);
+            map.put("pageSize",pageSize);
             map.put("msg",e.getCause().getMessage());
         }
         return map;
@@ -145,6 +155,38 @@ public class QuestionController {
     }
 
     //添加题目
+    @PostMapping("/question")
+    public Map<String,Object> addQuestion(Question q){
+        Map<String,Object> map=new HashMap<>();
+        try {
+            int addCount=questionService.addQuestion(q);
+            map.put("addCount",addCount);
+        }catch (RuntimeException e){
+            map.put("status","error");
+            map.put("addCount",0);
+            map.put("msg",e.getCause().getMessage());
+            return map;
+        }
+        map.put("status","success");
+        map.put("msg","添加成功");
+        return map;
+    }
 
-    //修该题目
+    //修改题目
+    @PatchMapping("/question")
+    public Map<String,Object> updateQuestion(Question question){
+        Map<String,Object> map=new HashMap<>();
+        try {
+            int updateCount=questionService.updateQuestion(question);
+            map.put("updateCount",updateCount);
+        }catch (RuntimeException e){
+            map.put("status","error");
+            map.put("updateCount",0);
+            map.put("msg",e.getCause().getMessage());
+            return map;
+        }
+        map.put("status","success");
+        map.put("msg","修改成功");
+        return map;
+    }
 }

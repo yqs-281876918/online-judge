@@ -14,7 +14,7 @@ public class InputAndOutputService {
 
     /**
      * 查询题目输入输出
-     * @param qid，题目id
+     * @param qid 题目id
      * @return
      */
     public List<InputAndOutput> getInputAndOutput(int qid) throws RuntimeException{
@@ -32,15 +32,13 @@ public class InputAndOutputService {
 
     /**
      * 添加题目输入输出
-     * @param qid,inAndOuts 题目id, 输入输出集合
+     * @param qid 题目id
+     * @param inAndOuts 输入输出集合
      * @return
      */
     public int addInputAndOutPut(int qid,List<InputAndOutput> inAndOuts) throws RuntimeException{
         return inputAndOutputMapper.addInputAndOutPut(qid,inAndOuts);
     }
-
-
-
 
     /**
      * 更改题目输入输出
