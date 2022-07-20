@@ -20,11 +20,42 @@ public class JudgeInterface {
     DBS db;
     /**
      *
-     * @param userid
-     * @param questionid
-     * @param lanTp
-     * @param code
+     * @param judgerParam
+     *
+     * 是一个base64编码的字符串
+     * 解码后对应字典：
+     * {
+     *     userid：
+     *           字符串 可以用用户名
+     *     questionid：
+     *          字符串 题目的编号
+     *     lanTp：
+     *          语言类型 可以为  java python golang  若为空则默认为  java
+     *     code：
+     *          base64编码的字符串
+     *              解码后对应原本的 代码文本
+     * }
+     *
+     *
      * @return
+     * 返货结果为json字符串对应字典
+     * {
+     *     code：
+     *          信息状态  0-正常 其他值-异常（暂时未考虑其他情况）
+     *     data：
+     *          包含一个json字符串 对应字典 是一个List 每个对象是一个测试用例的测试结果
+     *          {
+     *              msg_type
+     *              description
+     *              time_cost
+     *              TestId
+     *              memory_cost
+     *              expect_output
+     *              actual_output
+     *              detail
+     *          }
+     *     info：
+     * }
      */
     @RequestMapping("/judger")
     public String Judge(@RequestParam("judgerParam") String judgerParam )
