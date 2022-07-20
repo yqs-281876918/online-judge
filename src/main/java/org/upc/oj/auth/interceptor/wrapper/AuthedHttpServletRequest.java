@@ -12,7 +12,13 @@ public class AuthedHttpServletRequest extends HttpServletRequestWrapper {
     public void setUsername(String u){
         username=u;
     }
+    public String getUsername(){
+        return username;
+    }
     public void setIdentity(String i){
         identity=i;
+    }
+    public String getIdentity(){
+        return identity;
     }
 }
