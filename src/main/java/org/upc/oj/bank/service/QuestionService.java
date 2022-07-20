@@ -62,7 +62,7 @@ public class QuestionService {
     /**
      * 添加题目标签
      * @param qid 问题qid
-     * @param tids 标签tids
+     * @param tids 标签tids，若为空，表示删除该问题所有标签
      * @return
      */
     public int addQuestionTags(int qid,List<Integer> tids) throws RuntimeException{

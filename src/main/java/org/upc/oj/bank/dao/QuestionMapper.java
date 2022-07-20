@@ -12,7 +12,7 @@ public interface QuestionMapper {
 
     /**
      * 获取问题列表
-     * @param q question对象
+     * @param q question对象，若为空，则查询所有问题
      * @param start 问题起始位置
      * @param pageSize 每页问题数量
      * @return 问题集

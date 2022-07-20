@@ -3,6 +3,7 @@ package org.upc.oj.bank.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.dto.IORequestData;
 import org.upc.oj.bank.po.InputAndOutput;
 import org.upc.oj.bank.service.InputAndOutputService;
@@ -40,62 +41,83 @@ public class InputAndOutputController {
 
     //删除输入输出
     @DeleteMapping("/question/io")
-    public Map<String,Object> delInputAndOutput(int qid, @RequestParam("ids")List<Integer> ids){
+    public Map<String,Object> delInputAndOutput(int qid, @RequestParam("ids")List<Integer> ids, AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int delCount=inputAndOutputService.delInputAndOutPut(qid,ids);
-            map.put("delCount",delCount);
-        }catch (Exception e){
-            map.put("status","error");
+        if (request.getIdentity().equals("admin")) {
+            try {
+                int delCount=inputAndOutputService.delInputAndOutPut(qid,ids);
+                map.put("delCount",delCount);
+            }catch (Exception e){
+                map.put("status","error");
+                map.put("qid",qid);
+                map.put("delCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
             map.put("qid",qid);
-            map.put("delCount",0);
-            map.put("msg",e.getCause().getMessage());
+            map.put("msg","删除成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对问题进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("qid",qid);
-        map.put("msg","删除成功");
-        return map;
+
     }
 
     //添加输入输出
     @PostMapping("/question/io")
-    public Map<String,Object> addInputAndOutput(@RequestBody IORequestData ioData){
+    public Map<String,Object> addInputAndOutput(@RequestBody IORequestData ioData,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int addCount=inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());
-            map.put("addCount",addCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
+        if(request.getIdentity().equals("admin")){
+            try {
+                int addCount=inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());
+                map.put("addCount",addCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("qid",ioData.getQid());
+                map.put("addCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
             map.put("qid",ioData.getQid());
-            map.put("addCount",0);
-            map.put("msg",e.getCause().getMessage());
+            map.put("msg","插入成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对问题进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("qid",ioData.getQid());
-        map.put("msg","插入成功");
-        return map;
+
     }
 
     //修改输入输出
     @PutMapping("/question/io")
-    public Map<String,Object> updateInputAndOutput(@RequestBody IORequestData ioData){
+    public Map<String,Object> updateInputAndOutput(@RequestBody IORequestData ioData,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            inputAndOutputService.delInputAndOutPut(ioData.getQid(),null);//删除所有输入输出
-            inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());//添加
-        }catch (RuntimeException e){
-            map.put("status","error");
+        if (request.getIdentity().equals("admin")) {
+            try {
+                inputAndOutputService.delInputAndOutPut(ioData.getQid(),null);//删除所有输入输出
+                inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());//添加
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("qid",ioData.getQid());
+                map.put("addCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
             map.put("qid",ioData.getQid());
-            map.put("addCount",0);
-            map.put("msg",e.getCause().getMessage());
+            map.put("addCount",ioData.getIos().size());
+            map.put("msg","修改成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对问题进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("qid",ioData.getQid());
-        map.put("addCount",ioData.getIos().size());
-        map.put("msg","修改成功");
-        return map;
+
     }
 }

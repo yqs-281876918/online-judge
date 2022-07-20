@@ -3,6 +3,7 @@ package org.upc.oj.bank.controller;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
 import org.upc.oj.bank.service.QuestionService;
@@ -85,108 +86,150 @@ public class QuestionController {
 
     //删除问题
     @DeleteMapping("/question")
-    public Map<String,Object> delQuestionById(int id){
+    public Map<String,Object> delQuestionById(int id, AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int delCount=questionService.delQuestionById(id);
-            map.put("delCount",delCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("delCount",0);
-            map.put("msg",e.getCause().getMessage());
+        if(request.getIdentity().equals("admin")){
+            try {
+                int delCount=questionService.delQuestionById(id);
+                map.put("delCount",delCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("delCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","删除成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","删除成功");
-        return map;
+
     }
 
     //删除问题多个标签
     @DeleteMapping("/question/tags")
-    public Map<String,Object> delQuestionTags(int qid, @RequestParam("tids")List<Integer> tids){
+    public Map<String,Object> delQuestionTags(int qid, @RequestParam("tids")List<Integer> tids,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int delCount=questionService.delQuestionTags(qid,tids);
-            map.put("delCount",delCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("delCount",0);
-            map.put("msg",e.getCause().getMessage());
+        if(request.getIdentity().equals("admin")){
+            try {
+                int delCount=questionService.delQuestionTags(qid,tids);
+                map.put("delCount",delCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("delCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","删除成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","删除成功");
-        return map;
+
     }
 
     //向问题插入多个标签
     @PostMapping("/question/tags")
-    public Map<String,Object> addQuestionTags(int qid, @RequestParam("tids")List<Integer> tids){
+    public Map<String,Object> addQuestionTags(int qid, @RequestParam("tids")List<Integer> tids,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int addCount=questionService.addQuestionTags(qid,tids);
-            map.put("addCount",addCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("addCount",0);
-            map.put("msg",e.getCause().getMessage());
+        if(request.getIdentity().equals("admin")){
+            try {
+                int addCount=questionService.addQuestionTags(qid,tids);
+                map.put("addCount",addCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("addCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","插入成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","插入成功");
-        return map;
+
     }
 
     //更改问题标签
     @PutMapping("/question/tags")
-    public Map<String,Object> updateQuestionTags(int qid,@RequestParam("tids")List<Integer> newTids){
+    public Map<String,Object> updateQuestionTags(int qid,@RequestParam("tids")List<Integer> newTids,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            questionService.delQuestionTags(qid,null);
-            questionService.addQuestionTags(qid,newTids);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("msg",e.getCause().getMessage());
+        if (request.getIdentity().equals("admin")) {
+            try {
+                questionService.delQuestionTags(qid,null);
+                questionService.addQuestionTags(qid,newTids);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","更改成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","更改成功");
-        return map;
+
     }
 
     //添加题目
     @PostMapping("/question")
-    public Map<String,Object> addQuestion(Question q){
+    public Map<String,Object> addQuestion(Question q,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int addCount=questionService.addQuestion(q);
-            map.put("addCount",addCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("addCount",0);
-            map.put("msg",e.getCause().getMessage());
+        if(request.getIdentity().equals("admin")){
+            try {
+                int addCount=questionService.addQuestion(q);
+                map.put("addCount",addCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("addCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","添加成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","添加成功");
-        return map;
+
     }
 
     //修改题目
     @PatchMapping("/question")
-    public Map<String,Object> updateQuestion(Question question){
+    public Map<String,Object> updateQuestion(Question question,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-        try {
-            int updateCount=questionService.updateQuestion(question);
-            map.put("updateCount",updateCount);
-        }catch (RuntimeException e){
-            map.put("status","error");
-            map.put("updateCount",0);
-            map.put("msg",e.getCause().getMessage());
+        if(request.getIdentity().equals("admin")){
+            try {
+                int updateCount=questionService.updateQuestion(question);
+                map.put("updateCount",updateCount);
+            }catch (RuntimeException e){
+                map.put("status","error");
+                map.put("updateCount",0);
+                map.put("msg",e.getCause().getMessage());
+                return map;
+            }
+            map.put("status","success");
+            map.put("msg","修改成功");
+            return map;
+        }else{
+            map.put("status","refused");
+            map.put("msg","权限不足，仅管理员才能对问题进行操作");
             return map;
         }
-        map.put("status","success");
-        map.put("msg","修改成功");
-        return map;
+
     }
 }
