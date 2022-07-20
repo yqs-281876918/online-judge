@@ -3,6 +3,7 @@ package org.upc.oj.judge.controller;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.service.QuestionService;
 import org.upc.oj.judge.bo.JudgeMsg;
@@ -42,14 +43,9 @@ public class JudgeController {
         return judgeService.judge(judgeMsg);
     }
 
-    @GetMapping("/name")
-    public String name(){
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return "55";
+    @GetMapping("/test")
+    public String name(AuthedHttpServletRequest request){
+        return "嗨嗨嗨";
     }
 
 }
