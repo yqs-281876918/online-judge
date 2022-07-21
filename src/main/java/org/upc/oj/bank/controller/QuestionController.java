@@ -31,7 +31,7 @@ public class QuestionController {
             map.put("questionList",questionList);
             map.put("count",questionList.size());//该页数量
             map.put("totalCount",totalCount);//符合某条件问题总数量
-            map.put("pageCount",totalCount/pageSize+1);//一共多少页
+            map.put("pageCount",totalCount%pageSize==0?totalCount/pageSize:totalCount/pageSize+1);//一共多少页
             map.put("curPage",curPage);//目前页数
             map.put("pageSize",pageSize);//每页数量
             map.put("msg","查询成功");
@@ -180,7 +180,6 @@ public class QuestionController {
             map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-
     }
 
     //添加题目

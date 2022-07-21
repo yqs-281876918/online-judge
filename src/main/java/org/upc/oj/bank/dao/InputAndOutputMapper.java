@@ -28,10 +28,6 @@ public interface InputAndOutputMapper {
      */
     public int addInputAndOutPut(int qid,List<InputAndOutput> inAndOuts);
 
-
-
-
-
     /**
      * 更改题目输入输出
      * @param inAndOuts
