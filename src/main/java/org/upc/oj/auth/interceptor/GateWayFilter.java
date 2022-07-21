@@ -19,11 +19,12 @@ import java.io.PrintWriter;
 @WebFilter(filterName = "gateway")
 public class GateWayFilter implements Filter {
     public boolean setResponseFailed(HttpServletResponse response){
+        response.setStatus(403);
         response.setCharacterEncoding("UTF8");
         response.setContentType("JSON");
         try {
             PrintWriter writer = response.getWriter();
-            writer.print("{\"status\":\"refused\",\"detail\":\"登录过期或未登录或者用户权限不足\"}");
+            writer.print("登录过期或未登录");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,6 +38,7 @@ public class GateWayFilter implements Filter {
         String uri=httpRequest.getRequestURI();
         if(uri.startsWith("/auth/login")||uri.startsWith("/auth/reg")){
             filterChain.doFilter(servletRequest,servletResponse);
+            return;
         }
         Cookie[] cookies=httpRequest.getCookies();
         if(cookies==null){

@@ -43,9 +43,4 @@ public class JudgeController {
         return judgeService.judge(judgeMsg);
     }
 
-    @GetMapping("/test")
-    public String name(AuthedHttpServletRequest request){
-        return "嗨嗨嗨";
-    }
-
 }
