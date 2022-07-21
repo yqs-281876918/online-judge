@@ -11,5 +11,7 @@ public class Question {
     private Integer io_count;
     private Integer timeout;
     private Integer memory_limit;
+    private Integer nb_pass;
+    private Integer nb_submit;
     private boolean deleted;
 }

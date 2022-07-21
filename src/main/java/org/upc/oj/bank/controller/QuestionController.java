@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
+import org.upc.oj.bank.dto.QuestionList;
 import org.upc.oj.bank.dto.QuestionWrapper;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
@@ -22,12 +23,12 @@ public class QuestionController {
 
     //获取问题列表
     @GetMapping("/questions")
-    public Map<String,Object> getQuestionList(QuestionWrapper q, int curPage, int pageSize,AuthedHttpServletRequest request) {
+    public Map<String,Object> getQuestionList(QuestionList q, int curPage, int pageSize, AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
         try{
             int start=(curPage-1)*pageSize;
-            List<QuestionWrapper> questionList=questionService.getQuestionList(q,start,pageSize,request.getUsername());
-            int totalCount=questionService.getQuestionCount(q);
+            List<QuestionList> questionList=questionService.getQuestionList(q,start,pageSize,request.getUsername());
+            int totalCount=questionService.getQuestionCount(q,request.getUsername());
             map.put("status","success");
             map.put("questionList",questionList);
             map.put("count",questionList.size());//该页数量
@@ -54,7 +55,7 @@ public class QuestionController {
     public Map<String,Object> getQuestionContent(int id,AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
         try{
-            Question q=questionService.getQuestionInf(id,request.getUsername());
+            QuestionWrapper q=questionService.getQuestionInf(id,request.getUsername());
             map.put("status","success");
             map.put("questionContent",q);
             map.put("msg","查询成功");

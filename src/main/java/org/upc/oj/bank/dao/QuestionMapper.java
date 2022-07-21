@@ -2,6 +2,7 @@ package org.upc.oj.bank.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.upc.oj.bank.dto.QuestionList;
 import org.upc.oj.bank.dto.QuestionWrapper;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
@@ -17,9 +18,9 @@ public interface QuestionMapper {
      * @param start 问题起始位置
      * @param pageSize 每页问题数量
      * @param username 用户名
-     * @return 问题集
+     * @return 问题列表集
      */
-    public List<QuestionWrapper> getQuestionList(@Param("q") QuestionWrapper q, @Param("start") int start, @Param("pageSize") int pageSize,@Param("username")String username);
+    public List<QuestionList> getQuestionList(@Param("q") QuestionList q, @Param("start") int start, @Param("pageSize") int pageSize,@Param("username")String username);
 
     /**
      * 获取问题详细信息
@@ -77,7 +78,7 @@ public interface QuestionMapper {
     /**
      * 获取题目总数量
      * @param q 问题对象
-     * @return
+     * @return 题目数量
      */
-    public int getQuestionCount(Question q);
+    public int getQuestionCount(QuestionList q, @Param("username")String username);
 }

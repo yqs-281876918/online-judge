@@ -3,6 +3,7 @@ package org.upc.oj.bank.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.upc.oj.bank.dao.QuestionMapper;
+import org.upc.oj.bank.dto.QuestionList;
 import org.upc.oj.bank.dto.QuestionWrapper;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
@@ -21,7 +22,7 @@ public class QuestionService {
      * @param pageSize 每页问题数量
      * @return 问题集
      */
-    public List<QuestionWrapper> getQuestionList(QuestionWrapper q, int start, int pageSize,String username) throws RuntimeException{
+    public List<QuestionList> getQuestionList(QuestionList q, int start, int pageSize,String username) throws RuntimeException{
         return questionMapper.getQuestionList(q,start,pageSize,username);
     }
 
@@ -93,7 +94,7 @@ public class QuestionService {
      * @param q 问题对象
      * @return
      */
-    public int getQuestionCount(Question q){
-        return questionMapper.getQuestionCount(q);
+    public int getQuestionCount(QuestionList q, String username){
+        return questionMapper.getQuestionCount(q,username);
     }
 }
