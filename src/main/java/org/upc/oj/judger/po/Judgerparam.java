@@ -2,6 +2,8 @@ package org.upc.oj.judger.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+
+
 public class Judgerparam {
     @JSONField(name = "userid")
     private String userid;
@@ -39,7 +41,6 @@ public class Judgerparam {
     public String getCode() {
         return code;
     }
-
     public void setCode(String code) {
         this.code = code;
     }

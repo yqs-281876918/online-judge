@@ -2,6 +2,7 @@ package org.upc.oj.judger.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.upc.oj.judger.dao.DBS;
 import org.upc.oj.judger.po.JudgeLogMap;
 import org.upc.oj.judger.po.LogParam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.List;
 
@@ -35,11 +37,13 @@ public class JudgeLog {
      *     time_cut     int     提交测评的时间戳
      * }
      */
+    @CrossOrigin
     @RequestMapping("/judgelog")
-    public String Judge(@RequestParam("logParam") String logParam ){
+    public String Judge(@RequestParam("logParam") String logParam, HttpServletResponse response ){
         Base64.Decoder base64_decoder = Base64.getDecoder();
         LogParam log= JSON.parseObject(new String(base64_decoder.decode(logParam)),LogParam.class);
         List<JudgeLogMap> map=db.GetJudgeLog(log.getUserid(),log.getQid());
+        System.out.println(logParam);
         return JSON.toJSONString(map);
     }
 }

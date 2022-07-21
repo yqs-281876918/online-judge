@@ -2,6 +2,7 @@ package org.upc.oj.judger.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +60,7 @@ public class JudgeInterface {
      *          提示消息
      * }
      */
+    @CrossOrigin
     @RequestMapping("/judger")
     public String Judge(@RequestParam("judgerParam") String judgerParam )
     {
@@ -90,6 +92,29 @@ public class JudgeInterface {
         JudgeMsg judgeMsg=new JudgeMsg(param.getLanTp(),param.getQuestionid(),param.getUserid(),DeCode,filePathInfo,testIOFiles);
         ServerJuder js=new ServerJuder(judgeMsg);
         List<ResultMap>rlt=js.Start();
+        int cnt=0;
+        String FirstTyple=null;
+        for(ResultMap r:rlt)
+        {
+            if(r.getMsg_type().equals("pass"))
+            {
+                cnt++;
+            }else if(FirstTyple==null){
+                FirstTyple=r.getMsg_type();
+            }
+        }
+        DBupdata ud=new DBupdata();
+        ud.setId(new Integer(param.getQuestionid()));
+        if(cnt==rlt.size())
+            ud.setPass(1);
+        db.updataquestion(ud);
+        if(FirstTyple==null)
+            FirstTyple="pass";
+        ShortjdRlt sjr=new ShortjdRlt();
+        sjr.setTest_sum(new Integer(rlt.size()).toString());
+        sjr.setTest_pass(new Integer(cnt).toString());
+        sjr.setFirst_error(FirstTyple);
+
         fileSystem.DeleteAll();
         Information rtn= new Information();
         rtn.setCode(0);
@@ -98,7 +123,7 @@ public class JudgeInterface {
         JudgeLogMap map=new JudgeLogMap();
         map.setUsername(param.getUserid());
         map.setQid(new Integer(param.getQuestionid()));
-        map.setResult(Srtn );
+        map.setResult(JSON.toJSONString(sjr));
         map.setTime_cut(time_cut);
         db.InsertJudgeLog(map);
         return Srtn;
