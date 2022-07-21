@@ -45,9 +45,10 @@ public class LoginController {
             return msg;
         }
         msg.put("status", "success");
-        msg.put("token", token);
+        msg.put("username", username);
         Cookie token_cookie = new Cookie("token", token);
         token_cookie.setMaxAge((int) (LoginService.lifeTime / 1000));
+        token_cookie.setPath("/");
         response.addCookie(token_cookie);
 
         return msg;
@@ -57,6 +58,7 @@ public class LoginController {
     public Map<String, String> getToken(HttpServletResponse response) {
         Cookie cookie = new Cookie("token", "");
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         response.addCookie(cookie);
         Map<String, String> msg = new HashMap<>();
         msg.put("status", "success");
