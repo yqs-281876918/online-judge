@@ -118,7 +118,16 @@ public class JudgeInterface {
         fileSystem.DeleteAll();
         Information rtn= new Information();
         rtn.setCode(0);
-        rtn.setData(JSON.toJSONString(rlt));
+
+        ResultMap rs=null;
+        for(ResultMap r:rlt)
+        {
+            rs=r;
+            if(!r.getMsg_type().equals("pass"))
+
+            break;
+        }
+        rtn.setData(JSON.toJSONString(rs));
         String Srtn=JSON.toJSONString(rtn);
         JudgeLogMap map=new JudgeLogMap();
         map.setUsername(param.getUserid());
