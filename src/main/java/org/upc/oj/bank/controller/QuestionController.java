@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
+import org.upc.oj.bank.dto.QuestionWrapper;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
 import org.upc.oj.bank.service.QuestionService;
@@ -21,11 +22,11 @@ public class QuestionController {
 
     //获取问题列表
     @GetMapping("/questions")
-    public Map<String,Object> getQuestionList(Question q,int curPage,int pageSize) {
+    public Map<String,Object> getQuestionList(QuestionWrapper q, int curPage, int pageSize,AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
         try{
             int start=(curPage-1)*pageSize;
-            List<Question> questionList=questionService.getQuestionList(q,start,pageSize);
+            List<QuestionWrapper> questionList=questionService.getQuestionList(q,start,pageSize,request.getUsername());
             int totalCount=questionService.getQuestionCount(q);
             map.put("status","success");
             map.put("questionList",questionList);
@@ -50,10 +51,10 @@ public class QuestionController {
 
     //获取问题详细信息
     @GetMapping("/question/content")
-    public Map<String,Object> getQuestionList(int id) {
+    public Map<String,Object> getQuestionContent(int id,AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
         try{
-            Question q=questionService.getQuestionInf(id);
+            Question q=questionService.getQuestionInf(id,request.getUsername());
             map.put("status","success");
             map.put("questionContent",q);
             map.put("msg","查询成功");
@@ -88,6 +89,7 @@ public class QuestionController {
     @DeleteMapping("/question")
     public Map<String,Object> delQuestionById(int id, AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
+
         if(request.getIdentity().equals("admin")){
             try {
                 int delCount=questionService.delQuestionById(id);

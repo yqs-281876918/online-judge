@@ -10,6 +10,7 @@ import org.upc.oj.bank.po.Question;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class QuestionWrapper extends Question {
-    private boolean solved;
+    private String solved;
     private double passRate;
+
 }

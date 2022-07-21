@@ -4,11 +4,17 @@
 <mapper namespace="org.upc.oj.bank.dao.QuestionMapper">
 
     <!--查询问题-->
-    <select id="getQuestionList" resultType="org.upc.oj.bank.po.Question">
-        select id,title,difficulty from question
+    <select id="getQuestionList" resultType="org.upc.oj.bank.dto.QuestionWrapper">
+        <if test="q.solved!=null and q.solved.equals('false')">
+            select * from(
+        </if>
+        select distinct question.id,title,difficulty,
+        if(nb_pass=0,0,nb_pass/nb_submit) passRate,
+        if(question.id in(select qid from solve where username=#{username}),true,false) solved
+        from question left join solve on question.id=solve.qid
         <where>
             <if test="q.id!=null and q.id!=''">
-                and id=#{q.id}
+                and question.id=#{q.id}
             </if>
             <if test="q.title!=null and q.title!=''">
                 <bind name="blockTitleLike" value="'%'+q.title+'%'"/>
@@ -17,15 +23,24 @@
             <if test="q.difficulty!=null and q.difficulty!=''">
                 and difficulty=#{q.difficulty}
             </if>
+            <if test="q.solved!=null and q.solved.equals('true')">
+                and username=#{username}
+            </if>
             and deleted=0
         </where>
+        <if test="q.solved!=null and q.solved.equals('false') ">
+             ) as q where solved=0 order by q.id
+        </if>
         limit #{start},#{pageSize}
     </select>
 
     <!--查询题目完整信息-->
-    <select id="getQuestionInf" resultType="org.upc.oj.bank.po.Question">
-        select * from question where id=#{id} and deleted=0
-    </select>
+    <select id="getQuestionInf" resultType="org.upc.oj.bank.dto.QuestionWrapper">
+        select distinct question.*,if(nb_pass=0,0,nb_pass/nb_submit) rateSubmit,
+        if(question.id in(select qid from solve where username=#{username}),true,false) solved
+        from question left join solve on question.id=solve.qid
+        where question.id=#{id}
+</select>
 
     <!--查询某题的标签-->
     <select id="getQuestionTag" resultType="org.upc.oj.bank.po.Tag">
@@ -91,19 +106,7 @@
     <!--获取问题总数量-->
     <select id="getQuestionCount" resultType="java.lang.Integer">
         select count(*) from question
-        <where>
-            <if test="id!=null and id!=''">
-                and id=#{id}
-            </if>
-            <if test="title!=null and title!=''">
-                <bind name="blockTitleLike" value="'%'+title+'%'"/>
-                and title like #{blockTitleLike}
-            </if>
-            <if test="difficulty!=null and difficulty!=''">
-                and difficulty=#{difficulty}
-            </if>
-            and deleted=0
-        </where>
+
     </select>
 
 </mapper>
