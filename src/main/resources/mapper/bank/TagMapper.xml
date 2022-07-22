@@ -9,7 +9,7 @@
     </insert>
     <!--获取标签信息-->
     <select id="getTagList" resultType="org.upc.oj.bank.po.Tag">
-        select * from tag
+         select  tag.*,count(qid) questionCount from tag left join question_tag on tag.id=question_tag.tid group by id  order by id
     </select>
     <!--删除标签-->
     <delete id="delTagByTitle">
