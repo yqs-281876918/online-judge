@@ -114,7 +114,6 @@ public class JudgeInterface {
         sjr.setTest_sum(new Integer(rlt.size()).toString());
         sjr.setTest_pass(new Integer(cnt).toString());
         sjr.setFirst_error(FirstTyple);
-
         fileSystem.DeleteAll();
         Information rtn= new Information();
         rtn.setCode(0);

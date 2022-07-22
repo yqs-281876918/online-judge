@@ -109,13 +109,13 @@ public class FileSystem {
                 boolean rst=delFile(f);
                 if(!rst)
                 {
-                    System.out.println("DeleteFailed:"+f.getAbsolutePath());
+                    //System.out.println("DeleteFailed:"+f.getAbsolutePath());
                     return rst;
                 }
 
             }
         }
-        System.out.println("deleted:"+file.getAbsolutePath());
+        //System.out.println("deleted:"+file.getAbsolutePath());
 
         return file.delete();
     }

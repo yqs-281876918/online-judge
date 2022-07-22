@@ -55,7 +55,7 @@ public class ServerJuder {
 
 
             for(TestIOFile i :Msg.getTestIOFiles()){
-                System.out.println(i.getInput());
+               // System.out.println(i.getInput());
                 Process pid= null;
 
                     pid = Runtime.getRuntime().
@@ -67,8 +67,7 @@ public class ServerJuder {
                 System.out.println("执行编译器");
 
                 pid.waitFor();
-                Runtime.getRuntime().
-                        exec("taskkill /f /IM conhost.exe /t");
+
                 System.out.println("运行结束");
                 File f=new File(Msg.getFilePathInfo().getPath_result()+"\\"+i.getId()+".json");
                 if (!f.exists())continue;
@@ -89,6 +88,7 @@ public class ServerJuder {
                 //System.out.println(res.toString());//测试是否生成结果集成功
                 //System.out.println(new String(b));//控制台输出执行后的结果
                 //System.out.println(f.toString());输出的是文件历经
+                Thread.sleep(100);
                 }
 
 
