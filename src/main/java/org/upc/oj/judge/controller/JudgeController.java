@@ -1,5 +1,6 @@
 package org.upc.oj.judge.controller;
 
+import com.mysql.cj.util.Base64Decoder;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,8 @@ import org.upc.oj.judge.dao.JudgeMapper;
 import org.upc.oj.judge.dto.JudgeRequestParam;
 import org.upc.oj.judge.service.JudgeService;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 
 @RestController
@@ -28,19 +31,10 @@ public class JudgeController {
     private JudgeMapper judgeMapper;
 
     @PostMapping("/code")
-    public Map<String, Object> judge(@RequestBody JudgeRequestParam param) {
-        JudgeMsg judgeMsg = new JudgeMsg();
-        judgeMsg.setQid(param.getQid());
-        judgeMsg.setLang(param.getLangType().toLowerCase());
-        judgeMsg.setCode(param.getCode());
-        judgeMsg.setCode_path(config.workDir + param.getUsername() + "/" + param.getQid() + "/" + Language.getCodeFilename(param.getLangType()));
-        judgeMsg.setInput_path(config.ioCacheDir + param.getQid() + "/" + config.inputDir);
-        judgeMsg.setOutput_path(config.ioCacheDir + param.getQid() + "/" + config.outputDir);
-        judgeMsg.setResult_path(config.workDir + param.getUsername() + "/" + param.getQid() + "/");
-        Question question = judgeMapper.queryQuestion(param.getQid());
-        judgeMsg.setTimeout(question.getTimeout());
-        judgeMsg.setMemory_limit(question.getMemory_limit());
-        return judgeService.judge(judgeMsg);
+    public Map<String, Object> judge(@RequestBody JudgeRequestParam param,AuthedHttpServletRequest request) {
+        Base64.Decoder base64_decoder = Base64.getDecoder();
+        param.setCode(new String(base64_decoder.decode(param.getCode().getBytes(StandardCharsets.UTF_8)),StandardCharsets.UTF_8));
+        return judgeService.judge(param.getCode(),param.getLangType(),param.getQid());
     }
 
 }

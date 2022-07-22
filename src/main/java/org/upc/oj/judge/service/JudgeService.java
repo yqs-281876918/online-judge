@@ -1,10 +1,13 @@
 package org.upc.oj.judge.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.upc.oj.file.util.FileUtil;
 import org.upc.oj.judge.bo.JudgeMsg;
 import org.upc.oj.judge.config.JudgeConfig;
+import org.upc.oj.judge.config.Language;
 import org.upc.oj.judge.dao.JudgeMapper;
 import org.upc.oj.judge.po.QuestionIO;
 
@@ -12,6 +15,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class JudgeService {
@@ -20,43 +24,54 @@ public class JudgeService {
     @Autowired
     private JudgeConfig config;
 
-    public Map<String, Object> judge(JudgeMsg judgeMsg){
+    public Map<String, Object> judge(String code,String type,Integer qid){
         Map<String,Object> msg = new HashMap<>();
         try {
-            //如果没有输入输出的缓存文件,就从数据库里读取并缓存
-            checkAndCreateIOFile(judgeMsg);
+            List<QuestionIO> ios=judgeMapper.queryQuestionIO(qid);
             //将代码写成文件
-            FileUtil.writeToFile(judgeMsg.getCode_path(),judgeMsg.getCode());
+            String randWorkspace= config.workDir+UUID.randomUUID().toString()+"/";
+            String codePath=randWorkspace+ Language.getCodeFilename(type);
+            FileUtil.writeToFile(codePath,code);
             //开始评测
-            ProcessBuilder judgeExeBuilder = new ProcessBuilder();
-            String[] commands = new String[]{config.judgeKernelPath, "-lang", judgeMsg.getLang(), "-code",
-                    judgeMsg.getCode_path(),"-input",judgeMsg.getInput_path(),"-output",judgeMsg.getOutput_path(),
-                    "-result",judgeMsg.getResult_path()};
-            judgeExeBuilder.command(String.join(" ",commands));
-            judgeExeBuilder.start();
-            msg.put("status","judging");
-            msg.put("description","评测提交成功");
+            int passCount=0;
+            double totalTimeCost=0;
+            double totalMemCost=0;
+            for(QuestionIO io : ios){
+                String inputPath=config.inputCacheDir+io.getId()+".in";
+                FileUtil.writeToFileIfNotExists(inputPath,io.getInput());
+                String outputPath=config.outputCacheDir+io.getId()+".out";
+                FileUtil.writeToFileIfNotExists(outputPath,io.getOutput());
+                String resultPath=randWorkspace+io.getId()+".json";
+                String[] commands = new String[]{config.workDir+config.judgerFileName, "-lang="+type,
+                        "-code="+codePath, "-input="+inputPath,"-output="+outputPath, "-result="+resultPath};
+                Process process = Runtime.getRuntime().exec(String.join(" ",commands));
+                process.waitFor();
+                byte[] bytes = new byte[1024];
+                process.getInputStream().read(bytes);
+                String resultJsonStr=FileUtil.readFile(resultPath);
+                JSONObject jsonObject = JSON.parseObject(resultJsonStr);
+                if(!jsonObject.getString("msg_type").equals("pass")){
+                    msg.put("status","fail");
+                    msg.put("pass",passCount);
+                    msg.put("total",ios.size());
+                    msg.put("msg",jsonObject);
+                    return msg;
+                }
+                totalTimeCost+=jsonObject.getDouble("time_cost");
+                totalMemCost+=jsonObject.getDouble("memory_cost");
+                passCount++;
+            }
+            msg.put("status","pass");
+            msg.put("pass",ios.size());
+            msg.put("total",ios.size());
+            msg.put("avg_time_cost",totalTimeCost/ios.size());
+            msg.put("avg_memory_cost",totalMemCost/ios.size());
             return msg;
         }catch (Exception e){
+            e.printStackTrace();
             msg.put("status","failed");
             msg.put("description","评测系统出错");
             return msg;
-        }
-    }
-
-    private void checkAndCreateIOFile(JudgeMsg judgeMsg) throws Exception {
-        if (FileUtil.isDirExist(judgeMsg.getInput_path())&&FileUtil.isDirExist(judgeMsg.getOutput_path())){
-            return;
-        }
-        FileUtil.createDirs(judgeMsg.getInput_path());
-        FileUtil.createDirs(judgeMsg.getOutput_path());
-        List<QuestionIO> questionIoList = judgeMapper.queryQuestionIO(judgeMsg.getQid());
-        for (int i = 0; i < questionIoList.size(); i++) {
-            QuestionIO data = questionIoList.get(i);
-            String inputFilePath = judgeMsg.getInput_path() + i + ".in";
-            String outputFilePath = judgeMsg.getOutput_path() + i + ".out";
-            FileUtil.writeToFile(inputFilePath,data.getInput());
-            FileUtil.writeToFile(outputFilePath,data.getOutput());
         }
     }
 }

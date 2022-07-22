@@ -17,7 +17,7 @@ public class OnlineJudgeToken {
     private Map<String, String> extra = new HashMap<>();//额外信息
 
     public static long MILLI_SECOND = 1L;//毫秒
-    public static long SECOND = MILLI_SECOND * 60;//秒
+    public static long SECOND = MILLI_SECOND * 1000;//秒
     public static long MINUTE = SECOND * 60;//分
     public static long HOUR = MINUTE * 60;//时
     public static long DAY = HOUR * 24;//天

@@ -47,7 +47,7 @@ public class LoginController {
         msg.put("status", "success");
         msg.put("username", username);
         Cookie token_cookie = new Cookie("token", token);
-        token_cookie.setMaxAge((int) (LoginService.lifeTime / 1000));
+        token_cookie.setMaxAge(Integer.MAX_VALUE);
         token_cookie.setPath("/");
         response.addCookie(token_cookie);
 

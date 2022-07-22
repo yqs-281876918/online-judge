@@ -7,5 +7,4 @@ public class JudgeRequestParam {
     private Integer qid;
     private String code;
     private String langType;
-    private String username;
 }
