@@ -5,17 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.upc.oj.file.util.FileUtil;
-import org.upc.oj.judge.bo.JudgeMsg;
 import org.upc.oj.judge.config.JudgeConfig;
 import org.upc.oj.judge.config.Language;
 import org.upc.oj.judge.dao.JudgeMapper;
+import org.upc.oj.judge.dao.SubmitRecordMapper;
 import org.upc.oj.judge.po.QuestionIO;
+import org.upc.oj.judge.po.SubmitRecord;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class JudgeService {
@@ -69,7 +66,7 @@ public class JudgeService {
             return msg;
         }catch (Exception e){
             e.printStackTrace();
-            msg.put("status","failed");
+            msg.put("status","fail");
             msg.put("description","评测系统出错");
             return msg;
         }
