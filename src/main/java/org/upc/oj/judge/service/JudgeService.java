@@ -41,7 +41,7 @@ public class JudgeService {
                 String outputPath=config.outputCacheDir+io.getId()+".out";
                 FileUtil.writeToFileIfNotExists(outputPath,io.getOutput());
                 String resultPath=randWorkspace+io.getId()+".json";
-                String[] commands = new String[]{config.workDir+config.judgerFileName, "-lang="+type,
+                String[] commands = new String[]{config.judgerPath, "-lang="+type,
                         "-code="+codePath, "-input="+inputPath,"-output="+outputPath, "-result="+resultPath,
                 "-timeout="+question.getTimeout(),"memory-limit"+question.getMemory_limit()};
                 Process process = Runtime.getRuntime().exec(String.join(" ",commands));
