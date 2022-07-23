@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.upc.oj.bank.po.Question;
 import org.upc.oj.file.util.FileUtil;
 import org.upc.oj.judge.config.JudgeConfig;
 import org.upc.oj.judge.config.Language;
@@ -24,6 +25,7 @@ public class JudgeService {
     public Map<String, Object> judge(String code,String type,Integer qid){
         Map<String,Object> msg = new HashMap<>();
         try {
+            Question question = judgeMapper.queryQuestion(qid);
             List<QuestionIO> ios=judgeMapper.queryQuestionIO(qid);
             //将代码写成文件
             String randWorkspace= config.workDir+UUID.randomUUID().toString()+"/";
@@ -40,7 +42,8 @@ public class JudgeService {
                 FileUtil.writeToFileIfNotExists(outputPath,io.getOutput());
                 String resultPath=randWorkspace+io.getId()+".json";
                 String[] commands = new String[]{config.workDir+config.judgerFileName, "-lang="+type,
-                        "-code="+codePath, "-input="+inputPath,"-output="+outputPath, "-result="+resultPath};
+                        "-code="+codePath, "-input="+inputPath,"-output="+outputPath, "-result="+resultPath,
+                "-timeout="+question.getTimeout(),"memory-limit"+question.getMemory_limit()};
                 Process process = Runtime.getRuntime().exec(String.join(" ",commands));
                 process.waitFor();
                 byte[] bytes = new byte[1024];
