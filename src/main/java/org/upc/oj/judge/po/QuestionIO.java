@@ -9,6 +9,6 @@ import lombok.Data;
 public class QuestionIO {
     private Integer id;
     private Integer qid;
-    private String input;
-    private String output;
+    private String input="";
+    private String output="";
 }

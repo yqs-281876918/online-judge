@@ -23,15 +23,16 @@ public class JudgeConfig {
                 dir.mkdirs();
             }
             File judgerExe=new File(judgerPath);
-            if(!judgerExe.exists()){
-                judgerExe.createNewFile();
-                FileOutputStream fos = new FileOutputStream(judgerExe);
-                InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("bin\\judger.exe");
-                byte[] buffer = new byte[1024];
-                int n;
-                while ((n= resourceAsStream.read(buffer))!=0){
-                    fos.write(buffer,0,n);
-                }
+            if(judgerExe.exists()){
+                judgerExe.delete();
+            }
+            judgerExe.createNewFile();
+            FileOutputStream fos = new FileOutputStream(judgerExe);
+            InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("bin\\judger.exe");
+            byte[] buffer = new byte[1024];
+            int n;
+            while ((n= resourceAsStream.read(buffer))!=-1){
+                fos.write(buffer,0,n);
             }
         } catch (IOException e) {
             e.printStackTrace();
