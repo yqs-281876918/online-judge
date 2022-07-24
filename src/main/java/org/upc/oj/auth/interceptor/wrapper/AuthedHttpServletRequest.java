@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 public class AuthedHttpServletRequest extends HttpServletRequestWrapper {
-    private String username;
-    private String identity;
+    private String username=null;
+    private String identity=null;
     public AuthedHttpServletRequest(HttpServletRequest request) {
         super(request);
     }

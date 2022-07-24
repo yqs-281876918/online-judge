@@ -1,8 +1,10 @@
 package org.upc.oj.auth.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.upc.oj.auth.config.RouteConfig;
 import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.auth.po.OnlineJudgeToken;
 import org.upc.oj.auth.util.AuthUtil;
@@ -18,6 +20,8 @@ import java.io.PrintWriter;
 @Component
 @WebFilter(filterName = "gateway")
 public class GateWayFilter implements Filter {
+    @Autowired
+    private RouteConfig routeConfig;
     public boolean setResponseFailed(HttpServletResponse response){
         response.setStatus(403);
         response.setCharacterEncoding("UTF8");
@@ -40,10 +44,30 @@ public class GateWayFilter implements Filter {
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }
+        OnlineJudgeToken ojt = getOnlineJudgeToken(servletRequest);
+        if(routeConfig.getReleaseUrls().contains(uri)){
+            AuthedHttpServletRequest authedHttpServletRequest= new AuthedHttpServletRequest(httpRequest);
+            if(ojt!=null&&!ojt.isExpired()){
+                authedHttpServletRequest.setUsername(ojt.getUserName());
+                authedHttpServletRequest.setIdentity(ojt.getIdentity());
+            }
+            filterChain.doFilter(authedHttpServletRequest,servletResponse);
+        }else {
+            if(ojt==null||ojt.isExpired()){
+                setResponseFailed(httpResponse);
+                return;
+            }
+            AuthedHttpServletRequest authedHttpServletRequest=new AuthedHttpServletRequest(httpRequest);
+            authedHttpServletRequest.setUsername(ojt.getUserName());
+            authedHttpServletRequest.setIdentity(ojt.getIdentity());
+            filterChain.doFilter(authedHttpServletRequest,servletResponse);
+        }
+    }
+    private OnlineJudgeToken getOnlineJudgeToken(ServletRequest servletRequest){
+        HttpServletRequest httpRequest=(HttpServletRequest)servletRequest;
         Cookie[] cookies=httpRequest.getCookies();
         if(cookies==null){
-            setResponseFailed(httpResponse);
-            return;
+            return null;
         }
         String token=null;
         for(Cookie cookie : cookies){
@@ -53,17 +77,8 @@ public class GateWayFilter implements Filter {
             }
         }
         if(token==null){
-            setResponseFailed(httpResponse);
-            return;
+            return null;
         }
-        OnlineJudgeToken ojt = AuthUtil.parseToken(token);
-        if(ojt==null||ojt.isExpired()){
-            setResponseFailed(httpResponse);
-            return;
-        }
-        AuthedHttpServletRequest authedHttpServletRequest=new AuthedHttpServletRequest(httpRequest);
-        authedHttpServletRequest.setUsername(ojt.getUserName());
-        authedHttpServletRequest.setIdentity(ojt.getIdentity());
-        filterChain.doFilter(authedHttpServletRequest,servletResponse);
+        return AuthUtil.parseToken(token);
     }
 }

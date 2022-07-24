@@ -8,6 +8,7 @@ import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.judge.po.SubmitRecord;
 import org.upc.oj.judge.service.SubmitRecordService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,9 @@ public class SubmitRecordController {
     private SubmitRecordService submitRecordService;
     @GetMapping("/all")
     public List<SubmitRecord> getRecords(AuthedHttpServletRequest request,Integer qid){
+        if(request.getUsername()==null){
+            return new ArrayList<>();
+        }
         return submitRecordService.getSubmitRecordByUsername(request.getUsername(),qid);
     }
 }
