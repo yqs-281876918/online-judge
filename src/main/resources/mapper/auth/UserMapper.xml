@@ -6,4 +6,25 @@
     <select id="getUserList" resultType="org.upc.oj.auth.po.OJUser">
         select username,identity from user where username=#{username} and password=#{password}
     </select>
+
+    <select id="getUsers" resultType="org.upc.oj.auth.po.OJUser">
+        select distinct * from user
+        <where>
+            <if test="user.username!=null and user.username!=''">
+                <bind name="blockNameLike" value="'%'+user.username+'%'"/>
+                and username=#{blockNameLike}
+            </if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(*) from user
+        <where>
+            <if test="username!=null and username!=''">
+                <bind name="blockNameLike" value="'%'+username+'%'"/>
+                and username=#{blockNameLike}
+            </if>
+        </where>
+    </select>
 </mapper>

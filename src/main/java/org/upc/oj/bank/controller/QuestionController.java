@@ -23,12 +23,15 @@ public class QuestionController {
 
     //获取问题列表
     @GetMapping("/questions")
-    public Map<String,Object> getQuestionList(QuestionList q, int curPage, int pageSize, AuthedHttpServletRequest request) {
+    public Map<String,Object> getQuestionList(QuestionList q, int curPage, int pageSize,String tid,String username, AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
+        if(username==null){
+            username=request.getUsername();
+        }
         try{
             int start=(curPage-1)*pageSize;
-            List<QuestionList> questionList=questionService.getQuestionList(q,start,pageSize,request.getUsername());
-            int totalCount=questionService.getQuestionCount(q,request.getUsername());
+            List<QuestionList> questionList=questionService.getQuestionList(q,start,pageSize,username,tid);
+            int totalCount=questionService.getQuestionCount(q,username,tid);
             map.put("status","success");
             map.put("questionList",questionList);
             map.put("count",questionList.size());//该页数量

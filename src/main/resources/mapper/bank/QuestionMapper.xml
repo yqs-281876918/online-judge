@@ -20,12 +20,23 @@
                 <bind name="blockTitleLike" value="'%'+q.title+'%'"/>
                 and title like #{blockTitleLike}
             </if>
+            <if test="q.content!=null and q.content!=''">
+                <bind name="blockContentLike" value="'%'+q.content+'%'"/>
+                and content like #{blockContentLike}
+            </if>
             <if test="q.difficulty!=null and q.difficulty!=''">
                 and difficulty=#{q.difficulty}
             </if>
             <if test="q.solved!=null and q.solved.equals('true')">
                 and username=#{username}
             </if>
+            <if test="tid!=null and tid!=''">
+                and question.id in (select qid from question_tag where tid=#{tid})
+            </if>
+            <if test="username!=null and username!=''">
+                and username=#{username}
+            </if>
+
             and deleted=0
         </where>
         <if test="q.solved!=null and q.solved.equals('false') ">
@@ -121,10 +132,20 @@
                 <bind name="blockTitleLike" value="'%'+q.title+'%'"/>
                 and title like #{blockTitleLike}
             </if>
+            <if test="q.content!=null and q.content!=''">
+                <bind name="blockContentLike" value="'%'+q.content+'%'"/>
+                and content like #{blockContentLike}
+            </if>
             <if test="q.difficulty!=null and q.difficulty!=''">
                 and difficulty=#{q.difficulty}
             </if>
             <if test="q.solved!=null and q.solved.equals('true')">
+                and username=#{username}
+            </if>
+            <if test="tid!=null and tid!=''">
+                and question.id in (select qid from question_tag where tid=#{tid})
+            </if>
+            <if test="username!=null and username!=''">
                 and username=#{username}
             </if>
             and deleted=0

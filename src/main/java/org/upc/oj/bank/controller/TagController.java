@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/bank")
 public class TagController {
@@ -58,7 +59,7 @@ public class TagController {
         return map;
     }
 
-    //删除标签
+    //删除标签---------------------------------------------------------------
     @DeleteMapping("/tags")
     public Map<String,Object> delTagByTitle(@RequestParam("ids")List<Integer> ids,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
@@ -75,7 +76,7 @@ public class TagController {
             map.put("status","success");
             map.put("msg","删除成功");
             return map;
-        }else{
+       }else{
             map.put("status","refused");
             map.put("msg","权限不足，仅管理员才能对标签进行操作");
             return map;
@@ -83,7 +84,7 @@ public class TagController {
 
     }
 
-    //修改标签
+    //修改标签-------------------------------------
     @PatchMapping("/tag")
     public Map<String,Object> updateTagById(int id,@RequestParam("title") String newTitle,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();

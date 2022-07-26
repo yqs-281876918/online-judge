@@ -10,4 +10,5 @@ public class QuestionList {
     private Integer nb_submit;
     private String solved;
     private double passRate;
+    private String content;
 }

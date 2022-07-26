@@ -20,7 +20,8 @@ public interface QuestionMapper {
      * @param username 用户名
      * @return 问题列表集
      */
-    public List<QuestionList> getQuestionList(@Param("q") QuestionList q, @Param("start") int start, @Param("pageSize") int pageSize,@Param("username")String username);
+    public List<QuestionList> getQuestionList(@Param("q") QuestionList q, @Param("start") int start, @Param("pageSize") int pageSize,
+                                              @Param("username")String username,@Param("tid") String tid );
 
     /**
      * 获取问题详细信息
@@ -80,5 +81,5 @@ public interface QuestionMapper {
      * @param q 问题对象
      * @return 题目数量
      */
-    public int getQuestionCount(QuestionList q, @Param("username")String username);
+    public int getQuestionCount(QuestionList q, @Param("username")String username,@Param("tid") String tid);
 }

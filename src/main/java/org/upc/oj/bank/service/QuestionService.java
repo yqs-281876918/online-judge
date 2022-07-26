@@ -20,10 +20,11 @@ public class QuestionService {
      * @param q question对象
      * @param start 问题起始位置
      * @param pageSize 每页问题数量
+     * @param tid 标签id
      * @return 问题集
      */
-    public List<QuestionList> getQuestionList(QuestionList q, int start, int pageSize,String username) throws RuntimeException{
-        return questionMapper.getQuestionList(q,start,pageSize,username);
+    public List<QuestionList> getQuestionList(QuestionList q, int start, int pageSize,String username,String tid) throws RuntimeException{
+        return questionMapper.getQuestionList(q,start,pageSize,username,tid);
     }
 
     /**
@@ -92,9 +93,11 @@ public class QuestionService {
     /**
      * 获取题目总数量
      * @param q 问题对象
+     * @param username 用户名
+     * @param tid 标签id
      * @return
      */
-    public int getQuestionCount(QuestionList q, String username){
-        return questionMapper.getQuestionCount(q,username);
+    public int getQuestionCount(QuestionList q, String username,String tid){
+        return questionMapper.getQuestionCount(q,username,tid);
     }
 }
