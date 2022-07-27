@@ -31,13 +31,7 @@ public class LoginService {
      * @return token值, 如果为null说明认证失败
      */
     public String getTokenByLogin(String username, String password) {
-        String encryptedPassword;
-        try {
-            encryptedPassword = coder.encryptDES(password, AuthUtil.SECURE_KEY);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        String encryptedPassword = AuthUtil.encodePassword(password);
         List<OJUser> userList = userMapper.getUserList(username, encryptedPassword);
         if (userList.size() == 1) {
             OJUser user = userList.get(0);
@@ -48,5 +42,14 @@ public class LoginService {
         } else {
             return null;
         }
+    }
+
+    public OJUser getUser(String username,String password){
+        String encryptedPassword = AuthUtil.encodePassword(password);
+        List<OJUser> users=userMapper.getUserList(username,encryptedPassword);
+        if(users.size()==1){
+            return users.get(0);
+        }
+        return null;
     }
 }

@@ -48,4 +48,30 @@ public class AuthUtil {
             return null;
         }
     }
+
+    /**
+     * 加密密码
+     * @param password
+     * @return
+     */
+    public static String encodePassword(String password){
+        try {
+            return coder.encryptDES(password,SECURE_KEY);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 解密密码
+     * @param password
+     * @return
+     */
+    public static String decodePassword(String password){
+        try {
+            return coder.decryptDES(password,SECURE_KEY);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

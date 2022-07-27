@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.upc.oj.bank.dao.QuestionMapper2">
+    <select id="getQuestionCountByDiff" resultType="int">
+        select count(id) from question where difficulty=#{diff};
+    </select>
+    <select id="getFinishedCountByDiff" resultType="int">
+        select count(question.id) from solve,question where solve.qid=question.id and solve.username=#{username} and question.difficulty=#{diff};
+    </select>
+    <select id="search" resultType="org.upc.oj.bank.po.Question">
+        select * from
+    </select>
+</mapper>

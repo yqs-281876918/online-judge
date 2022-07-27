@@ -3,6 +3,7 @@ package org.upc.oj.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.upc.oj.auth.dto.LoginRequestParam;
+import org.upc.oj.auth.po.OJUser;
 import org.upc.oj.auth.service.LoginService;
 
 import javax.servlet.http.Cookie;
@@ -55,13 +56,27 @@ public class LoginController {
     }
 
     @PostMapping(path = "/logout")
-    public Map<String, String> getToken(HttpServletResponse response) {
+    public Map<String, String> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("token", "");
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
         Map<String, String> msg = new HashMap<>();
         msg.put("status", "success");
+        return msg;
+    }
+
+    @PostMapping("/admin/login")
+    public Map<String,Object> adminLogin(@RequestBody(required = false) LoginRequestParam param){
+        Map<String,Object> msg = new HashMap<>();
+        String username = param.getUsername();
+        String password = param.getPassword();
+        OJUser user = loginService.getUser(username, password);
+        if(user==null){
+            msg.put("status","fail");
+        }else {
+            if(user.getIdentity().equals("admin")&&user.getIdentity().equals("super"));
+        }
         return msg;
     }
 }
