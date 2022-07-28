@@ -15,7 +15,7 @@ public interface UserMapper {
     int addUser(OJUser user);
     List<OJUser> getUserByName(@Param("username") String username);
     int updateUser(OJUser user,@Param("username")String username);
-
+    int deleteUser (@Param("username") String username);
 }
 
 

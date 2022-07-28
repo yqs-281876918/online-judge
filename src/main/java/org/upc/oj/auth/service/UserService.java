@@ -60,4 +60,12 @@ public class UserService {
     public int updateUser(OJUser user,String username) throws RuntimeException{
         return userMapper.updateUser(user,username);
     }
+    /**
+     * 删除用户
+     * @param username 要删除的用户名
+     * @return
+     */
+    public int deleteUser(String username) throws RuntimeException{
+        return userMapper.deleteUser(username);
+    }
 }

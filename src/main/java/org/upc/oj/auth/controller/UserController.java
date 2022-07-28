@@ -98,7 +98,7 @@ public class UserController {
                     int addCount = userService.addUser(user);
                     map.put("status", "success");
                     map.put("addCount", addCount);
-                    map.put("msg", "添加成功");
+                    map.put("msg", "删除成功");
                     return map;
                 } else {
                     map.put("status", "refused");
@@ -114,7 +114,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("user/username")
+    @PatchMapping("/user/username")
     public Map<String,Object> updateUsername(OJUser user,String uid, AuthedHttpServletRequest respond) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -155,7 +155,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("user/password")
+    @PatchMapping("/user/password")
     public Map<String,Object> updatePassword(OJUser user,String uid, String psw,AuthedHttpServletRequest respond) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -191,4 +191,34 @@ public class UserController {
             return map;
         }
     }
+
+    @DeleteMapping("/user")
+    public Map<String,Object> deleteUser(String username,AuthedHttpServletRequest respond) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            List<OJUser> userList = userService.getUserByName(username);
+            if (userList.size() <= 0) {//用户不存在
+                map.put("status", "error");
+                map.put("msg", "用户不存在");
+                return map;
+            } else {//用户存在
+                if (respond.getIdentity().equals("admin")) {
+                    int delCount = userService.deleteUser(username);
+                    map.put("status", "success");
+                    map.put("delCount", delCount);
+                    map.put("msg", "删除成功");
+                    return map;
+                } else {
+                    map.put("status", "refused");
+                    map.put("msg", "仅管理员才有权限操作用户信息");
+                    return map;
+                }
+            }
+            } catch(RuntimeException e){
+                map.put("status", "error");
+                map.put("delCount", 0);
+                map.put("msg", e.getCause().getMessage());
+                return map;
+            }
+        }
 }
