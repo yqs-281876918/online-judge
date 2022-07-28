@@ -31,4 +31,33 @@ public class UserService {
     public int getUserCount(OJUser user) throws RuntimeException{
         return userMapper.getUserCount(user);
     }
+
+
+    /**
+     * 判断用户是存在
+     * @param username 用户名
+     * @return
+     */
+    public List<OJUser> getUserByName(String username) throws RuntimeException{
+        return userMapper.getUserByName(username);
+    }
+
+    /**
+     * 增加用户
+     * @param user 用户对象
+     * @return
+     */
+    public int addUser(OJUser user) throws RuntimeException{
+        return userMapper.addUser(user);
+    }
+
+    /**
+     * 修改用户信息
+     * @param user 用户对象
+     * @param username 要修改的用户
+     * @return
+     */
+    public int updateUser(OJUser user,String username) throws RuntimeException{
+        return userMapper.updateUser(user,username);
+    }
 }

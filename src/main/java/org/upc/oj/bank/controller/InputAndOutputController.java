@@ -100,7 +100,9 @@ public class InputAndOutputController {
         if (request.getIdentity().equals("admin")) {
             try {
                 inputAndOutputService.delInputAndOutPut(ioData.getQid(),null);//删除所有输入输出
-                inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());//添加
+                if(ioData.getIos().size()>0){
+                    inputAndOutputService.addInputAndOutPut(ioData.getQid(),ioData.getIos());//添加
+                }
             }catch (RuntimeException e){
                 map.put("status","error");
                 map.put("qid",ioData.getQid());

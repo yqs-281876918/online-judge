@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.dto.QuestionList;
 import org.upc.oj.bank.dto.QuestionWrapper;
+import org.upc.oj.bank.dto.TagRequestData;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.bank.po.Tag;
 import org.upc.oj.bank.service.QuestionService;
@@ -169,12 +170,12 @@ public class QuestionController {
 
     //更改问题标签
     @PutMapping("/question/tags")
-    public Map<String,Object> updateQuestionTags(int qid,@RequestParam("tids")List<Integer> newTids,AuthedHttpServletRequest request){
+    public Map<String,Object> updateQuestionTags(@RequestBody TagRequestData tagData, AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
         if (request.getIdentity().equals("admin")) {
             try {
-                questionService.delQuestionTags(qid,null);
-                questionService.addQuestionTags(qid,newTids);
+                questionService.delQuestionTags(tagData.getQid(),null);
+                questionService.addQuestionTags(tagData.getQid(),tagData.getTagIds());
             }catch (RuntimeException e){
                 map.put("status","error");
                 map.put("msg",e.getCause().getMessage());
@@ -192,7 +193,7 @@ public class QuestionController {
 
     //添加题目
     @PostMapping("/question")
-    public Map<String,Object> addQuestion(Question q,AuthedHttpServletRequest request){
+    public Map<String,Object> addQuestion(@RequestBody Question q,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
         if(request.getIdentity().equals("admin")){
             try {
@@ -218,7 +219,7 @@ public class QuestionController {
 
     //修改题目
     @PatchMapping("/question")
-    public Map<String,Object> updateQuestion(Question question,AuthedHttpServletRequest request){
+    public Map<String,Object> updateQuestion(@RequestBody Question question,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
         if(request.getIdentity().equals("admin")){
             try {

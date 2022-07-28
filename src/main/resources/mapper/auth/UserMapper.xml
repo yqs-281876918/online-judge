@@ -3,10 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.upc.oj.auth.dao.UserMapper">
+
+    <!--判断用户是否存在（密码是否正确）-->
     <select id="getUserList" resultType="org.upc.oj.auth.po.OJUser">
         select username,identity from user where username=#{username} and password=#{password}
     </select>
 
+    <!--获取用户信息-->
     <select id="getUsers" resultType="org.upc.oj.auth.po.OJUser">
         select distinct * from user
         <where>
@@ -18,6 +21,7 @@
         limit #{start},#{pageSize}
     </select>
 
+    <!--获取用户数量-->
     <select id="getUserCount" resultType="java.lang.Integer">
         select count(*) from user
         <where>
@@ -28,7 +32,32 @@
         </where>
     </select>
 
+    <!--注册普通用户-->
     <insert id="regAccount">
         insert into user(username,password,identity) values (#{username},#{password},'user');
     </insert>
+
+    <!--判断用户是否存在-->
+    <select id="getUserByName" resultType="org.upc.oj.auth.po.OJUser" >
+        select * from user where username = #{username}
+    </select>
+    <!--注册用户-->
+    <insert id="addUser">
+        insert into user(username,password,identity) values (#{username},#{password},#{identity});
+    </insert>
+
+    <!--修改用户信息-->
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="user.username!=null and user.username!=''">
+                username=#{user.username},
+            </if>
+            <if test="user.password!=null and user.password!=''">
+                password=#{user.password},
+            </if>
+        </set>
+        where username=#{username}
+    </update>
+
 </mapper>
