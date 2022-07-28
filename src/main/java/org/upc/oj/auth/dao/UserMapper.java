@@ -11,6 +11,7 @@ public interface UserMapper {
     List<OJUser> getUserList(String username, String password);
     List<OJUser> getUsers(OJUser user, @Param("start") int start,@Param("pageSize") int pageSize);
     int getUserCount(OJUser user);
+    int regAccount(String username,String password);
 }
 
 

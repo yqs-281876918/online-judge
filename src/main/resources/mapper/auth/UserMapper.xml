@@ -27,4 +27,8 @@
             </if>
         </where>
     </select>
+
+    <insert id="regAccount">
+        insert into user(username,password,identity) values (#{username},#{password},'user');
+    </insert>
 </mapper>

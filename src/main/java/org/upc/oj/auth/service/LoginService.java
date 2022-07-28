@@ -44,6 +44,20 @@ public class LoginService {
         }
     }
 
+    public OnlineJudgeToken getOJTByLogin(String username, String password){
+        String encryptedPassword = AuthUtil.encodePassword(password);
+        List<OJUser> userList = userMapper.getUserList(username, encryptedPassword);
+        if (userList.size() == 1) {
+            OJUser user = userList.get(0);
+            OnlineJudgeToken ojt = new OnlineJudgeToken(lifeTime);
+            ojt.setUserName(username);
+            ojt.setIdentity(user.getIdentity());
+            return ojt;
+        } else {
+            return null;
+        }
+    }
+
     public OJUser getUser(String username,String password){
         String encryptedPassword = AuthUtil.encodePassword(password);
         List<OJUser> users=userMapper.getUserList(username,encryptedPassword);
@@ -51,5 +65,9 @@ public class LoginService {
             return users.get(0);
         }
         return null;
+    }
+
+    public void regAccount(String user,String password) throws Exception{
+        userMapper.regAccount(user, AuthUtil.encodePassword(password));
     }
 }

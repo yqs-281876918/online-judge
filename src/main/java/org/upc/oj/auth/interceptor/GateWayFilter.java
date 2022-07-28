@@ -40,7 +40,7 @@ public class GateWayFilter implements Filter {
         HttpServletRequest httpRequest=(HttpServletRequest)servletRequest;
         HttpServletResponse httpResponse=(HttpServletResponse)servletResponse;
         String uri=httpRequest.getRequestURI();
-        if(uri.startsWith("/auth/login")||uri.startsWith("/auth/reg")){
+        if(uri.startsWith("/auth/login")||uri.startsWith("/auth/reg")||uri.startsWith("/auth/admin/login")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

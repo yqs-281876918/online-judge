@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.upc.oj.auth.dto.LoginRequestParam;
 import org.upc.oj.auth.po.OJUser;
+import org.upc.oj.auth.po.OnlineJudgeToken;
 import org.upc.oj.auth.service.LoginService;
+import org.upc.oj.auth.util.AuthUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -67,15 +69,35 @@ public class LoginController {
     }
 
     @PostMapping("/admin/login")
-    public Map<String,Object> adminLogin(@RequestBody(required = false) LoginRequestParam param){
+    public Map<String,Object> adminLogin(String username,String password,HttpServletResponse response){
         Map<String,Object> msg = new HashMap<>();
-        String username = param.getUsername();
-        String password = param.getPassword();
-        OJUser user = loginService.getUser(username, password);
-        if(user==null){
+        OnlineJudgeToken ojt = loginService.getOJTByLogin(username, password);
+        if(ojt==null){
             msg.put("status","fail");
         }else {
-            if(user.getIdentity().equals("admin")&&user.getIdentity().equals("super"));
+            if(ojt.getIdentity().equals("super")||ojt.getIdentity().equals("admin")){
+                msg.put("status","success");
+                String token = AuthUtil.geneToken(ojt);
+                msg.put("token",token);
+                Cookie cookie = new Cookie("token", token);
+                cookie.setMaxAge(Integer.MAX_VALUE);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }else {
+                msg.put("status","fail");
+            }
+        }
+        return msg;
+    }
+
+    @PostMapping("/reg")
+    public Map<String,Object> reg(@RequestBody(required = false) LoginRequestParam param){
+        Map<String,Object> msg= new HashMap<>();
+        try {
+            loginService.regAccount(param.getPassword(),param.getUsername());
+            msg.put("status","success");
+        }catch (Exception e){
+            msg.put("status","fail");
         }
         return msg;
     }
