@@ -94,12 +94,11 @@ public class QuestionController {
 
     //删除问题
     @DeleteMapping("/question")
-    public Map<String,Object> delQuestionById(int id, AuthedHttpServletRequest request){
+    public Map<String,Object> delQuestionById(int id,String mode, AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
-
         if(request.getIdentity().equals("admin")){
             try {
-                int delCount=questionService.delQuestionById(id);
+                int delCount=questionService.delQuestionById(id,mode);
                 map.put("delCount",delCount);
             }catch (RuntimeException e){
                 map.put("status","error");
@@ -115,7 +114,6 @@ public class QuestionController {
             map.put("msg","权限不足，仅管理员才能对题目进行操作");
             return map;
         }
-
     }
 
     //删除问题多个标签
@@ -170,7 +168,7 @@ public class QuestionController {
 
     //更改问题标签
     @PutMapping("/question/tags")
-    public Map<String,Object> updateQuestionTags(@RequestBody TagRequestData tagData, AuthedHttpServletRequest request){
+    public Map<String,Object> updateQuestionTags(@RequestBody TagRequestData tagData , AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
         if (request.getIdentity().equals("admin")) {
             try {
@@ -221,6 +219,7 @@ public class QuestionController {
     @PatchMapping("/question")
     public Map<String,Object> updateQuestion(@RequestBody Question question,AuthedHttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
+        System.out.println(question.isDeleted());
         if(request.getIdentity().equals("admin")){
             try {
                 int updateCount=questionService.updateQuestion(question);

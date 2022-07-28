@@ -38,9 +38,14 @@
                     and username=#{username}
                 </if>
             </if>
-
-
-            and deleted=0
+            <choose>
+                <when test="q.deleted !=null and q.deleted!=''">
+                    and deleted=#{q.deleted}
+                </when>
+                <otherwise>
+                    and deleted=0
+                </otherwise>
+            </choose>
         </where>
         <if test="q.solved!=null and q.solved.equals('false') ">
              ) as q where solved=0 order by q.id
@@ -63,7 +68,14 @@
 
     <!--删除题目-->
     <update id="delQuestionById">
-        update question set deleted=1 where id=#{id}
+        <choose>
+            <when test="mode ==null or mode == ''">
+                update question set deleted=1 where id=#{id}
+            </when>
+            <when test="mode == 'forever'">
+                delete from question where id = #{id}
+            </when>
+        </choose>
     </update>
 
     <!--删除题目标签-->
@@ -111,7 +123,10 @@
                 timeout=#{timeout},
             </if>
             <if test="memory_limit!=null and memory_limit!=''">
-                memory_limit=#{memory_limit}
+                memory_limit=#{memory_limit},
+            </if>
+            <if test="!deleted">
+                deleted=#{deleted},
             </if>
         </set>
         where id=#{id}
@@ -153,7 +168,14 @@
                     and username=#{username}
                 </if>
             </if>
-            and deleted=0
+            <choose>
+                <when test="q.deleted !=null and q.deleted!=''">
+                    and deleted=#{q.deleted}
+                </when>
+                <otherwise>
+                    and deleted=0
+                </otherwise>
+            </choose>
         </where>
         <if test="q.solved!=null and q.solved.equals('false') ">
              ) as q where solved=0 order by q.id

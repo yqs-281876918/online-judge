@@ -11,4 +11,5 @@ public class QuestionList {
     private String solved;
     private double passRate;
     private String content;
+    private boolean deleted;
 }

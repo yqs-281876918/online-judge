@@ -42,9 +42,10 @@ public interface QuestionMapper {
     /**
      * 删除问题
      * @param id 问题id
+     * @param mode 删除模式
      * @return
      */
-    public int delQuestionById(int id);
+    public int delQuestionById(@Param("id") int id,@Param("mode") String mode);
 
     /**
      * 删除题目标签

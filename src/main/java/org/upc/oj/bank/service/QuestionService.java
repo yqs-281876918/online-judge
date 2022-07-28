@@ -47,10 +47,11 @@ public class QuestionService {
     /**
      * 删除问题
      * @param id 问题id
-     * @return
+     * @param mode 删除模式
+     * @return 删除数量
      */
-    public int delQuestionById(int id) throws RuntimeException{
-        return questionMapper.delQuestionById(id);
+    public int delQuestionById(int id,String mode) throws RuntimeException{
+        return questionMapper.delQuestionById(id,mode);
     }
     /**
      * 删除题目标签
