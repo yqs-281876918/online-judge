@@ -25,13 +25,15 @@ public class QuestionController {
     @GetMapping("/questions")
     public Map<String,Object> getQuestionList(QuestionList q, int curPage, int pageSize,String tid,String username, AuthedHttpServletRequest request) {
         Map<String,Object> map=new HashMap<>();
+        int flg=1;//为1表示url传入用户名。需要进行筛选
         if(username==null){
+            flg=0;
             username=request.getUsername();
         }
         try{
             int start=(curPage-1)*pageSize;
-            List<QuestionList> questionList=questionService.getQuestionList(q,start,pageSize,username,tid);
-            int totalCount=questionService.getQuestionCount(q,username,tid);
+            List<QuestionList> questionList=questionService.getQuestionList(q,start,pageSize,username,tid,flg);
+            int totalCount=questionService.getQuestionCount(q,username,tid,flg);
             map.put("status","success");
             map.put("questionList",questionList);
             map.put("count",questionList.size());//该页数量

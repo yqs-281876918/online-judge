@@ -33,9 +33,12 @@
             <if test="tid!=null and tid!=''">
                 and question.id in (select qid from question_tag where tid=#{tid})
             </if>
-            <if test="username!=null and username!=''">
-                and username=#{username}
+            <if test="flg==1">
+                <if test="username!=null and username!=''">
+                    and username=#{username}
+                </if>
             </if>
+
 
             and deleted=0
         </where>
@@ -145,8 +148,10 @@
             <if test="tid!=null and tid!=''">
                 and question.id in (select qid from question_tag where tid=#{tid})
             </if>
-            <if test="username!=null and username!=''">
-                and username=#{username}
+            <if test="flg==1">
+                <if test="username!=null and username!=''">
+                    and username=#{username}
+                </if>
             </if>
             and deleted=0
         </where>

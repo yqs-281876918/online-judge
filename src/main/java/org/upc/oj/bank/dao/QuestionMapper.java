@@ -18,10 +18,11 @@ public interface QuestionMapper {
      * @param start 问题起始位置
      * @param pageSize 每页问题数量
      * @param username 用户名
+     * @param flg 标记是否需要根据用户名筛选
      * @return 问题列表集
      */
     public List<QuestionList> getQuestionList(@Param("q") QuestionList q, @Param("start") int start, @Param("pageSize") int pageSize,
-                                              @Param("username")String username,@Param("tid") String tid );
+                                              @Param("username")String username,@Param("tid") String tid ,@Param("flg") int flg);
 
     /**
      * 获取问题详细信息
@@ -79,7 +80,8 @@ public interface QuestionMapper {
     /**
      * 获取题目总数量
      * @param q 问题对象
+     * @param flg 标记是否需要根据用户名筛选
      * @return 题目数量
      */
-    public int getQuestionCount(QuestionList q, @Param("username")String username,@Param("tid") String tid);
+    public int getQuestionCount(QuestionList q, @Param("username")String username,@Param("tid") String tid,@Param("flg") int flg);
 }
