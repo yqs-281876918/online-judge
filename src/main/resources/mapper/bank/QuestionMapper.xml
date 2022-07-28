@@ -87,8 +87,8 @@
     </insert>
 
     <!--添加题目-->
-    <insert id="addQuestion">
-        insert into question values(null,#{title},#{content},#{difficulty},#{io_count},#{timeout},#{memory_limit},#{deleted})
+    <insert id="addQuestion" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into question values(null,#{title},#{content},#{difficulty},#{io_count},#{timeout},#{memory_limit},0,0,0)
     </insert>
     
     <!--修该题目-->

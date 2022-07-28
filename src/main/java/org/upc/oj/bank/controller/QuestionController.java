@@ -198,6 +198,7 @@ public class QuestionController {
             try {
                 int addCount=questionService.addQuestion(q);
                 map.put("addCount",addCount);
+                map.put("qid",q.getId());
             }catch (RuntimeException e){
                 map.put("status","error");
                 map.put("addCount",0);
