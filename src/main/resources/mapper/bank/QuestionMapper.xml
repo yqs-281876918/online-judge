@@ -132,6 +132,9 @@
         where id=#{id}
     </update>
 
+    <update id="addPass">
+        update question set nb_pass=nb_pass+#{nb_pass},nb_submit=nb_submit+#{nb_submit} where id=#{qid}
+    </update>
     <!--获取问题总数量-->
     <select id="getQuestionCount" resultType="java.lang.Integer">
         select count(*) from (

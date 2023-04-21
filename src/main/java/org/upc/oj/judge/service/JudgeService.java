@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.upc.oj.bank.dao.QuestionMapper;
 import org.upc.oj.bank.po.Question;
 import org.upc.oj.file.util.FileUtil;
 import org.upc.oj.judge.config.JudgeConfig;
@@ -20,9 +21,12 @@ public class JudgeService {
     @Autowired
     private JudgeMapper judgeMapper;
     @Autowired
+    private QuestionMapper questionMapper;
+    @Autowired
     private JudgeConfig config;
 
     public Map<String, Object> judge(String code,String type,Integer qid){
+        questionMapper.addPass(qid,0,1);
         Map<String,Object> msg = new HashMap<>();
         try {
             Question question = judgeMapper.queryQuestion(qid);
@@ -66,6 +70,7 @@ public class JudgeService {
             msg.put("total",ios.size());
             msg.put("avg_time_cost",totalTimeCost/ios.size());
             msg.put("avg_memory_cost",totalMemCost/ios.size());
+            questionMapper.addPass(qid,1,0);
             return msg;
         }catch (Exception e){
             e.printStackTrace();

@@ -1,9 +1,8 @@
 package org.upc.oj.bank.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
+import org.upc.oj.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.dto.QuestionList;
 import org.upc.oj.bank.dto.QuestionWrapper;
 import org.upc.oj.bank.dto.TagRequestData;

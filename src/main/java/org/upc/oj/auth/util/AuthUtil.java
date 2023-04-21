@@ -41,6 +41,9 @@ public class AuthUtil {
      */
     public static OnlineJudgeToken parseToken(String token) {
         try {
+            if(token==null){
+                return null;
+            }
             String jsonStr = coder.decryptBASE64(token, SECURE_KEY);
             return JSON.parseObject(jsonStr, OnlineJudgeToken.class);
         } catch (Exception e) {

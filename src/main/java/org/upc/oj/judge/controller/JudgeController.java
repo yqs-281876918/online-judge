@@ -1,22 +1,16 @@
 package org.upc.oj.judge.controller;
 
-import com.mysql.cj.util.Base64Decoder;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
-import org.upc.oj.bank.po.Question;
+import org.upc.oj.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.bank.service.QuestionService;
-import org.upc.oj.judge.bo.JudgeMsg;
 import org.upc.oj.judge.config.JudgeConfig;
 import org.upc.oj.judge.config.JudgeErr;
-import org.upc.oj.judge.config.Language;
 import org.upc.oj.judge.dao.JudgeMapper;
 import org.upc.oj.judge.dao.SubmitRecordMapper;
 import org.upc.oj.judge.dto.JudgeRequestParam;
 import org.upc.oj.judge.po.SubmitRecord;
 import org.upc.oj.judge.service.JudgeService;
-import org.upc.oj.judge.service.SubmitRecordService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -52,7 +46,8 @@ public class JudgeController {
             record.setResult(0);
         }else {
             Map<String,Object> msg=(Map<String, Object>) res.get("msg");
-            record.setResult(JudgeErr.getErrIDByTypeStr((String) msg.get("msg_type")));
+            int result=JudgeErr.getErrIDByTypeStr((String) msg.get("msg_type"));
+            record.setResult(result);
         }
         record.setNb_pass((Integer) res.get("pass"));
         record.setNb_total((Integer) res.get("total"));

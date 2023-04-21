@@ -85,4 +85,6 @@ public interface QuestionMapper {
      * @return 题目数量
      */
     public int getQuestionCount(QuestionList q, @Param("username")String username,@Param("tid") String tid,@Param("flg") int flg);
+
+    void addPass(int qid,int nb_pass,int nb_submit);
 }

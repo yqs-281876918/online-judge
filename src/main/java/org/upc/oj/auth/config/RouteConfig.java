@@ -10,11 +10,18 @@ import java.util.Set;
 @Data
 @Component
 public class RouteConfig {
-    private Set<String> releaseUrls=new HashSet<>();
+    private Set<String> routes = new HashSet<>();
     public RouteConfig(){
-        releaseUrls.addAll(Arrays.asList("/auth/login","/auth/reg"));
-        releaseUrls.addAll(Arrays.asList("/bank/tags","/bank/question/tags","/bank/questions","/bank/question/content"));
-        releaseUrls.addAll(Arrays.asList("/comments"));
-        releaseUrls.addAll(Arrays.asList("/record/all"));
+        routes.add("/auth/login");
+        routes.add("/auth/reg");
+        routes.add("/bank/questions");
+        routes.add("/index.html");
+        routes.add("/bank/question/content");
+        routes.add("/bank/question/tags");
+        routes.add("/comments");
+        routes.add("/record/all");
+    }
+    public Set<String> getRouters(){
+        return routes;
     }
 }

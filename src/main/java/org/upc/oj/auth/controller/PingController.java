@@ -3,7 +3,7 @@ package org.upc.oj.auth.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
+import org.upc.oj.interceptor.wrapper.AuthedHttpServletRequest;
 
 import java.util.HashMap;
 import java.util.Map;

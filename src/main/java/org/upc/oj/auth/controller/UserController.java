@@ -2,7 +2,7 @@ package org.upc.oj.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.upc.oj.auth.interceptor.wrapper.AuthedHttpServletRequest;
+import org.upc.oj.interceptor.wrapper.AuthedHttpServletRequest;
 import org.upc.oj.auth.po.OJUser;
 import org.upc.oj.auth.service.UserService;
 import org.upc.oj.auth.util.AuthUtil;
